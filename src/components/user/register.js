@@ -25,7 +25,7 @@ export default function Register() {
     },[error, success]);
 
     function Register() {
-        fetch('http://localhost:5000/register', {
+        fetch('https://thecodingifyserver.herokuapp.com/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

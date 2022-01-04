@@ -66,7 +66,7 @@ export default function PersistentDrawerLeft(props) {
 
         const userId = localStorage.getItem('userId');
 
-        fetch(`http://localhost:5000/retrive_article_by_subject/${subject}`, {
+        fetch(`https://thecodingifyserver.herokuapp.com/retrive_article_by_subject/${subject}`, {
             method: 'GET'
         })
         .then(res => res.json())
@@ -81,7 +81,7 @@ export default function PersistentDrawerLeft(props) {
             console.log(err);
         })
 
-        fetch(`http://localhost:5000/retrive_feedback/${userId}/${subject}`, {
+        fetch(`https://thecodingifyserver.herokuapp.com/retrive_feedback/${userId}/${subject}`, {
             method: 'GET'
         })
         .then(res => res.json())
@@ -105,7 +105,7 @@ export default function PersistentDrawerLeft(props) {
 
     function AddFeedback() {
 
-        fetch('http://localhost:5000/addfeedback', {
+        fetch('https://thecodingifyserver.herokuapp.com/addfeedback', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

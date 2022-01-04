@@ -20,7 +20,7 @@ export default function AddSubject() {
     useEffect(() => {
 
         if(flag){
-            fetch('http://localhost:5000/retrive_all_categories', {
+            fetch('https://thecodingifyserver.herokuapp.com/retrive_all_categories', {
                 method: 'GET',
             })
             .then(res => res.json())
@@ -38,7 +38,7 @@ export default function AddSubject() {
         }
 
         if(url){
-            fetch('http://localhost:5000/addsubject', {
+            fetch('https://thecodingifyserver.herokuapp.com/addsubject', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

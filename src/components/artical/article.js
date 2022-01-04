@@ -21,7 +21,7 @@ export default function CreateArticle(){
     useEffect(() => {
 
         if(flag){
-            fetch('http://localhost:5000/retrive_all_categories', {
+            fetch('https://thecodingifyserver.herokuapp.com/retrive_all_categories', {
                 method: 'GET',
             })
             .then(res => res.json())
@@ -39,7 +39,7 @@ export default function CreateArticle(){
         }
 
         if(category){
-            fetch(`http://localhost:5000/retrive_subject/${category}`, {
+            fetch(`https://thecodingifyserver.herokuapp.com/retrive_subject/${category}`, {
                 method: 'GET',
             })
             .then(res => res.json())
@@ -65,7 +65,7 @@ export default function CreateArticle(){
     },[error, success, categories, flag, category]);
 
     function Publish() {
-        fetch('http://localhost:5000/articlepublish', {
+        fetch('https://thecodingifyserver.herokuapp.com/articlepublish', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

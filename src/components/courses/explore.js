@@ -32,7 +32,7 @@ export default function Explore() {
         const userId=localStorage.getItem('userId');
 
         if(flag){
-            fetch('http://localhost:5000/retrive_all_categories', {
+            fetch('https://thecodingifyserver.herokuapp.com/retrive_all_categories', {
                 method: 'GET',
             })
             .then(res => res.json())
@@ -50,7 +50,7 @@ export default function Explore() {
         }
         
         if(flag2){
-            fetch('http://localhost:5000/retrive_all_subjects', {
+            fetch('https://thecodingifyserver.herokuapp.com/retrive_all_subjects', {
                 method: 'GET',
             })
             .then(res => res.json())
@@ -68,7 +68,7 @@ export default function Explore() {
         }
 
         if(flag3){
-            fetch('http://localhost:5000/retrive_feedback_by_subject', {
+            fetch('https://thecodingifyserver.herokuapp.com/retrive_feedback_by_subject', {
                 method: 'GET',
             })
             .then(res => res.json())
@@ -86,7 +86,7 @@ export default function Explore() {
         }
 
         if(localStorage.getItem('userId')){
-            fetch(`http://localhost:5000/retrive_bookmark/${userId}`,{
+            fetch(`https://thecodingifyserver.herokuapp.com/retrive_bookmark/${userId}`,{
                 method: 'GET',
             })
             .then(res => res.json())
@@ -96,7 +96,7 @@ export default function Explore() {
         }
 
         if(category!=="All"){
-            fetch(`http://localhost:5000/retrive_subject/${category}`, {
+            fetch(`https://thecodingifyserver.herokuapp.com/retrive_subject/${category}`, {
                 method: 'GET',
             })
             .then(res => res.json())
@@ -133,7 +133,7 @@ export default function Explore() {
     }
 
     function addbookmark(subject){
-        fetch('http://localhost:5000/addbookmark', {
+        fetch('https://thecodingifyserver.herokuapp.com/addbookmark', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -158,7 +158,7 @@ export default function Explore() {
 
     function deletebookmark(subject){
         const userId=localStorage.getItem('userId');
-        fetch(`http://localhost:5000/delete_bookmark/${userId}/${subject}`, {
+        fetch(`https://thecodingifyserver.herokuapp.com/delete_bookmark/${userId}/${subject}`, {
             method: 'GET',
         })
         .then(res => res.json())

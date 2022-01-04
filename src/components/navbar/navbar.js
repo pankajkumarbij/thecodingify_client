@@ -27,7 +27,7 @@ export default function Navbar() {
 
         if(localStorage.getItem('userId')){
             const userId=localStorage.getItem('userId');
-            fetch(`http://localhost:5000/retrive_bookmark/${userId}`,{
+            fetch(`https://thecodingifyserver.herokuapp.com/retrive_bookmark/${userId}`,{
                 method: 'GET',
             })
             .then(res => res.json())
@@ -69,7 +69,7 @@ export default function Navbar() {
 
     function deletebookmark(subject){
         const userId=localStorage.getItem('userId');
-        fetch(`http://localhost:5000/delete_bookmark/${userId}/${subject}`, {
+        fetch(`https://thecodingifyserver.herokuapp.com/delete_bookmark/${userId}/${subject}`, {
             method: 'GET',
         })
         .then(res => res.json())

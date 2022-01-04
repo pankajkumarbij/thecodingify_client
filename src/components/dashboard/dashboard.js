@@ -14,7 +14,7 @@ export default function Dashboard() {
 
     useEffect(()=>{
         if(localStorage.getItem('userId')) {
-            fetch(`http://localhost:5000/retrive_article_by_userId/${userId}`, {
+            fetch(`https://thecodingifyserver.herokuapp.com/retrive_article_by_userId/${userId}`, {
                 method: 'GET'
             })
             .then(res => res.json())

@@ -18,7 +18,7 @@ export default function AddCategory() {
     },[error, success]);
 
     function AddCategory() {
-        fetch('http://localhost:5000/addcategory', {
+        fetch('https://thecodingifyserver.herokuapp.com/addcategory', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
