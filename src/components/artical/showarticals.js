@@ -163,6 +163,7 @@ export default function PersistentDrawerLeft(props) {
                                 </ListItem>
                             )
                         }
+                        return "";
                     })
                     :
                     <LoadingButton

@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, IconButton, Snackbar, Alert, Grid, Button } from '@mui/material';
-import Edit from '@mui/icons-material/Edit';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, IconButton, Snackbar, Alert, Button } from '@mui/material';
 import RemoveRedEye from '@mui/icons-material/RemoveRedEye';
 
 export default function AdminDashboard() {
@@ -92,6 +91,7 @@ export default function AdminDashboard() {
                                 </TableRow>
                             )
                         }
+                        return "";
                     })}
                     </TableBody>
                 </Table>
