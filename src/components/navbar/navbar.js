@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { AppBar,Toolbar,Typography,Button, Stack, Menu, MenuItem, IconButton, Drawer, Divider } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -11,6 +11,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Notifications from '@mui/icons-material/Notifications';
+import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 
 const drawerWidth = 200;
 
@@ -22,6 +23,8 @@ export default function Navbar() {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [anchorEl2, setAnchorEl2] = useState(null);
     const open = Boolean(anchorEl2);
+
+    let history = useHistory();
 
     useEffect(() => {
 
@@ -43,6 +46,7 @@ export default function Navbar() {
         };
         setResponsiveness();
         window.addEventListener("resize", () => setResponsiveness());
+
     }, [bookmarks]);
 
     const handleMenu = (event) => {
@@ -65,6 +69,9 @@ export default function Navbar() {
         localStorage.removeItem('name');
         localStorage.removeItem('email');
         localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        history.push("/");
+        window.location.reload(false);
     }
 
     function deletebookmark(subject){
@@ -134,6 +141,9 @@ export default function Navbar() {
                                 <IconButton>
                                     <Notifications size="small" style={{color: 'white'}} onClick={handleClick}/>
                                 </IconButton>
+                                {localStorage.getItem('name')==="Codingify" &&
+                                    <Button component={Link} to="/admindashboard" variant="outlined" color="error" startIcon={<AdminPanelSettingsOutlinedIcon />}>Admin Panel</Button>
+                                }
                                 <Button component={Link} to="/dashboard" variant="outlined" color="warning" startIcon={<AccountCircleRoundedIcon />}>Dashboard</Button>
                                 <Button variant="contained" color="warning" startIcon={<LogoutRoundedIcon />} onClick={()=>Logout()} >Logout</Button>
                             </>
@@ -175,14 +185,14 @@ export default function Navbar() {
                     onClose={handleDrawerClose}
                 >
                     <Stack spacing={3}>
-                        <Link to="/"><Button variant="navitem" onClick={handleDrawerClose}>Home</Button></Link>
-                        <Link to=""><Button variant="navitem" onClick={handleMenu} endIcon={<KeyboardArrowDownIcon/>}>Courses</Button></Link>
-                        <Link to="/login"><Button variant="navitem" onClick={handleDrawerClose}>Blogs</Button></Link>
+                        <Button component={Link} to="/" variant="navitem">Home</Button>
+                        <Button variant="navitem" onClick={handleMenu} endIcon={<KeyboardArrowDownIcon/>}>Courses</Button>
+                        <Button component={Link} to="/ppt" variant="navitem">Blogs</Button>
                         <Menu id="menu-appbar" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose} >
-                            <Link to="/explore/all"><MenuItem onClick={handleClose}>Explore All</MenuItem></Link>
-                            <Link to="/explore/dsa"><MenuItem onClick={handleClose}>DSA</MenuItem></Link>
-                            <Link to="/explore/web"><MenuItem onClick={handleClose}>Web Dev</MenuItem></Link>
-                            <Link to="/explore/mobile"><MenuItem onClick={handleClose}>Mobile Dev</MenuItem></Link>
+                            <MenuItem component={Link} to="/explore/all" onClick={handleClose}>Explore All</MenuItem>
+                            <MenuItem component={Link} to="/explore/dsa" onClick={handleClose}>DSA</MenuItem>
+                            <MenuItem component={Link} to="/explore/web" onClick={handleClose}>Web Dev</MenuItem>
+                            <MenuItem component={Link} to="/explore/mobile" onClick={handleClose}>Mobile Dev</MenuItem>
                         </Menu>
                         {localStorage.getItem('email') ?
                             <>
@@ -201,24 +211,29 @@ export default function Navbar() {
                                     {bookmarks && bookmarks.map((item, index)=> {
                                         return (
                                             <>
-                                                <Link to={"/showarticals/"+item.subject}><MenuItem onClick={handleClose2}>{index+1+". "+item.subject}</MenuItem></Link>
+                                                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                                                    <MenuItem component={Link} to={"/showarticals/"+item.subject} onClick={handleClose2}>{index+1+". "+item.subject}</MenuItem>
+                                                    <IconButton onClick={()=>deletebookmark(item.subject)}>
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                </div>
                                                 <Divider/>
                                             </>
                                         )
                                     })}
                                 </Menu>
-                                <Link to="/dashboard"><Button variant="outlined" color="warning" startIcon={<AccountCircleRoundedIcon />}>Dashboard</Button></Link>
-                                <Link to=""><Button variant="contained" color="warning" startIcon={<LogoutRoundedIcon />} onClick={()=>Logout()} >Logout</Button></Link>
+                                <Button component={Link} to="/dashboard" variant="outlined" color="warning" startIcon={<AccountCircleRoundedIcon />}>Dashboard</Button>
+                                <Button variant="contained" color="warning" startIcon={<LogoutRoundedIcon />} onClick={()=>Logout()} >Logout</Button>
                             </>
                             :
                             <>
-                                <Link to="/login"><Button variant="outlined" color="warning" startIcon={<LoginIcon />}>Login</Button></Link>
-                                <Link to="/register"><Button variant="contained" color="warning" startIcon={<PersonAddIcon />}>Register</Button></Link>
+                                <Button component={Link} to="/login" variant="outlined" color="warning" startIcon={<LoginIcon />}>Login</Button>
+                                <Button component={Link} to="/register" variant="contained" color="warning" startIcon={<PersonAddIcon />}>Register</Button>
                             </>
                         }
                     </Stack>
                 </Drawer>
-                <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 'bold' }} className={classes.brand}> Glow Coding </Typography>
+                <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 'bold' }} className={classes.brand}> Codingify </Typography>
             </Toolbar>
         );
     };

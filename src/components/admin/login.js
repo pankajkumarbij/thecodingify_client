@@ -5,6 +5,7 @@ import { Paper, Typography, Button, Stack, Grid, TextField, InputAdornment, Form
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import LoginIcon from '@mui/icons-material/Login';
+import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 
 export default function Login(props) {
     
@@ -23,7 +24,7 @@ export default function Login(props) {
     },[error, success]);
      
     function Login() {
-        fetch('https://thecodingifyserver.herokuapp.com/login', {
+        fetch('https://thecodingifyserver.herokuapp.com/admin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -59,7 +60,7 @@ export default function Login(props) {
             <Grid container spacing={2} className={classes.container}>
                 <Grid item xs={12} sm={12} align="center" justify="center">
                     <Paper elevation={24} className={classes.regcard}>
-                        <Typography variant="h6" sx={{ color: '#f4511e' }}><b><u>Login</u></b></Typography>
+                        <AdminPanelSettingsOutlinedIcon fontSize="large" color="error" /><Typography variant="h6" sx={{ color: '#f4511e' }}><b><u>Admin Login</u></b></Typography>
                         <br/>
                         <Stack spacing={2}>
                             <TextField label="Email" variant="outlined" color="warning" type="email" onChange={(e)=>setEmail(e.target.value)} />

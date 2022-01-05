@@ -72,6 +72,7 @@ export default function CreateArticle(){
             },
             body: JSON.stringify({
                 userId: localStorage.getItem('userId'),
+                name: localStorage.getItem('name'),
                 category: category,
                 subject: subject,
                 title: title,

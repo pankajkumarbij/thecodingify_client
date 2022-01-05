@@ -51,16 +51,11 @@ export default function PersistentDrawerLeft(props) {
     const [data, setData] = useState();
     const [content, setContent] = useState("Loading...");
     const [title, setTitle] = useState("Loading...");
+    const [name, setName] = useState("Loading...");
     const [rating, setRating] = useState(0);
     const [hover, setHover] = useState(-1);
     const [feedback, setFeedback] = useState("");
     const [feedbacks, setFeedbacks] = useState(0);
-    // const [numPages, setNumPages] = useState(null);
-    // const [pageNumber, setPageNumber] = useState(1);
-
-    // function onDocumentLoadSuccess({ numPages }) {
-    //     setNumPages(numPages);
-    // }
 
     useEffect(() => {
 
@@ -73,8 +68,9 @@ export default function PersistentDrawerLeft(props) {
         .then(data => {
             setData(data);
             if(title==="Loading..." && data[0].title){
-                setContent(data[0].content)
-                setTitle(data[0].title)
+                setContent(data[0].content);
+                setTitle(data[0].title);
+                setName(data[0].name);
             }
         })
         .catch(err => {
@@ -156,14 +152,18 @@ export default function PersistentDrawerLeft(props) {
             <Divider color="error" />
             <List>
                 {data ? 
-                    data.map((item, index) => (
-                        <ListItem button key={index} onClick={()=> {setContent(item.content);setTitle(item.title);}}>
-                            <ListItemIcon>
-                                <TopicIcon color="warning" />
-                            </ListItemIcon>
-                            <ListItemText primary={item.title} />
-                        </ListItem>
-                    ))
+                    data.map((item, index) => {
+                        if(item.status==="Approved"){
+                            return (
+                                <ListItem button key={index} onClick={()=> {setContent(item.content);setTitle(item.title);setName(item.name)}}>
+                                    <ListItemIcon>
+                                        <TopicIcon color="warning" />
+                                    </ListItemIcon>
+                                    <ListItemText primary={item.title} />
+                                </ListItem>
+                            )
+                        }
+                    })
                     :
                     <LoadingButton
                         color="secondary"
@@ -188,20 +188,11 @@ export default function PersistentDrawerLeft(props) {
                         >
                         <MenuIcon />
                     </IconButton>
-                    <u><h2>{title}</h2></u>
+                    <div style={{ display: 'flex', width:'100%', justifyContent: 'space-between' }}>
+                        <Typography variant="h4" style={{color: '#f4511e'}}><u>{title}</u></Typography>
+                        <Typography variant="h6" style={{color: '#060238'}}><u>Written By: {name}</u></Typography>
+                    </div>
                 </div>
-                {/* <div style={{marginTop:'30px', marginBottom: '10px'}} align="center" justify="center">
-                    <Document file="../course/p.pdf" onLoadSuccess={onDocumentLoadSuccess}>
-                        <Page pageNumber={pageNumber} width='1000'/>
-                    </Document>
-                    <p>Page {pageNumber} of {numPages}</p>
-                    {pageNumber>1 && 
-                        <Button variant="outlined" color="warning" onClick={()=>setPageNumber(pageNumber-1)}>Prev</Button>
-                    }
-                    {pageNumber<numPages && 
-                        <Button variant="outlined" color="warning" onClick={()=>setPageNumber(pageNumber+1)}>Next</Button>
-                    }
-                </div> */}
                 <Typography paragraph>
                     <div dangerouslySetInnerHTML={{ __html: content }} />
                 </Typography>
