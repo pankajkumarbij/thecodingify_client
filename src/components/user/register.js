@@ -33,8 +33,8 @@ export default function Register() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                firstName: firstName,
-                lastName: lastName,
+                fName: firstName,
+                lName: lastName,
                 email: email,
                 username: username,
                 password: password,
@@ -44,6 +44,7 @@ export default function Register() {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
+            console.log(data);
             if(data.error){
                 setError(data.error);
             }
