@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
-import { Paper, Typography, Button, Stack, Grid, TextField, InputAdornment, FormControl, InputLabel, IconButton, OutlinedInput, Alert } from '@mui/material';
+import { Button, Stack, Grid, TextField, InputAdornment, FormControl, InputLabel, IconButton, OutlinedInput, Alert } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import LoginIcon from '@mui/icons-material/Login';
@@ -58,45 +57,43 @@ export default function Login(props) {
         <>
             <Grid container spacing={2} className={classes.container}>
                 <Grid item xs={12} sm={12} align="center" justify="center">
-                    <Paper elevation={24} className={classes.regcard}>
-                        <Typography variant="h6" sx={{ color: '#f4511e' }}><b><u>Login</u></b></Typography>
-                        <br/>
-                        <Stack spacing={2}>
-                            <TextField label="Email" variant="outlined" color="warning" type="email" onChange={(e)=>setEmail(e.target.value)} />
-                            <FormControl variant="outlined" color="warning">
-                                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                                <OutlinedInput
-                                    id="outlined-adornment-password"
-                                    type={showPassword ? 'text' : 'password'}
-                                    onChange={(e)=>setPassword(e.target.value)}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={()=>setShowPassword(!showPassword)}
-                                                edge="end"
-                                                >
-                                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                    label="Password"
-                                    color="warning"
-                                />
-                            </FormControl>
-                            <Button variant="contained" color="warning" endIcon={<LoginIcon />} onClick={()=>Login()} >Login</Button>
-                        </Stack>
-                        <br/>
-                        {error!=="" &&
+                    <Stack spacing={2}>
+                        <TextField label="Email" variant="outlined" color="warning" type="email" onChange={(e)=>setEmail(e.target.value)} />
+                        <FormControl variant="outlined" color="warning">
+                            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                            <OutlinedInput
+                                id="outlined-adornment-password"
+                                type={showPassword ? 'text' : 'password'}
+                                onChange={(e)=>setPassword(e.target.value)}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={()=>setShowPassword(!showPassword)}
+                                            edge="end"
+                                            >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                                label="Password"
+                                color="warning"
+                            />
+                        </FormControl>
+                        <Button variant="contained" color="warning" endIcon={<LoginIcon />} onClick={()=>Login()} >Login</Button>
+                    </Stack>
+                    {error!=="" &&
+                        <>
+                            <br/>
                             <Alert variant="outlined" severity="error">{error}!</Alert>
-                        }
-                        {success!=="" &&
-                            <>
-                                <Alert variant="outlined" severity="success">{success}!</Alert>
-                                <Redirect to="/" />
-                            </>
-                        }
-                    </Paper>
+                        </>
+                    }
+                    {success!=="" &&
+                        <>
+                            <br/>
+                            <Alert variant="outlined" severity="success">{success}!</Alert>
+                        </>
+                    }
                 </Grid>
             </Grid>
             <br/>
@@ -107,24 +104,6 @@ export default function Login(props) {
 
 const useStyles = makeStyles({
     container: {
-        paddingTop: '10%', 
-        '@media (min-width:600px)': {
-            paddingTop: '4%', 
-        }
+        paddingTop: '30px', 
     },
-    regcard: {
-        marginTop: '70px',
-        width: '90%',
-        paddingTop: '5px',
-        paddingLeft: '10px',
-        paddingRight: '10px',
-        paddingBottom: '5px',
-        '@media (min-width:600px)': {
-            width: '50%',
-            paddingTop: '10px',
-            paddingLeft: '50px',
-            paddingRight: '50px',
-            paddingBottom: '50px',
-        }
-    }
 });

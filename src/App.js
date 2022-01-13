@@ -3,8 +3,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import Navbar from './components/navbar/navbar';
 import Home from './components/home/home';
-import Login from './components/user/login';
-import Register from './components/user/register';
 import Footer from './components/footer/footer';
 import CreateArticle from './components/artical/article';
 import AddCategory from './components/category-subjects/category';
@@ -12,7 +10,6 @@ import AddSubject from './components/category-subjects/subject';
 import Showarticals from './components/artical/showarticals';
 import Explore from './components/courses/explore';
 import Dashboard from './components/dashboard/dashboard';
-import Ppt from './components/ppt/ppt';
 import Admin from './components/admin/login';
 import AdminDashboard from './components/admin/dashboard';
 import EditArticle from './components/artical/editarticle';
@@ -90,10 +87,6 @@ function App() {
                                 <Explore />
                                 <Footer />
                             </Route>
-                            <Route path="/ppt">
-                                <Ppt />
-                                <Footer />
-                            </Route>
                         </Switch>
                     :
                         <Switch>
@@ -101,23 +94,11 @@ function App() {
                                 <Home />
                                 <Footer />
                             </Route>
-                            <Route path="/login">
-                                <Login />
-                                <Footer />
-                            </Route>
-                            <Route path="/register">
-                                <Register />
-                                <Footer />
-                            </Route>
                             <Route path="/showarticals/:subject">
                                 <Showarticals />
                             </Route>
                             <Route path="/explore/:cat">
                                 <Explore />
-                                <Footer />
-                            </Route>
-                            <Route path="/ppt">
-                                <Ppt />
                                 <Footer />
                             </Route>
                             <Route path="/admin">

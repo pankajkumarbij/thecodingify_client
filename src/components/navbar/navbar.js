@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
-import { AppBar,Toolbar,Typography,Button, Stack, Menu, MenuItem, IconButton, Drawer, Divider } from '@mui/material';
+import { AppBar,Toolbar,Typography,Button, Stack, Menu, MenuItem, IconButton, Drawer, Divider, Modal, Box, Tabs, Tab } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import LoginIcon from '@mui/icons-material/Login';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
@@ -12,9 +12,39 @@ import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Notifications from '@mui/icons-material/Notifications';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+import PropTypes from 'prop-types';
 import { serverUrl } from '../utils/url';
+import Login from '../user/login';
+import Register from '../user/register';
 
 const drawerWidth = 200;
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+        <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other} >
+            {value === index && (
+                <Box>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+  
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+  
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
 
 export default function Navbar() {
 
@@ -24,6 +54,8 @@ export default function Navbar() {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [anchorEl2, setAnchorEl2] = useState(null);
     const open = Boolean(anchorEl2);
+    const [open1, setOpen1] = useState(false);
+    const [value, setValue] = useState(0);
 
     let history = useHistory();
 
@@ -49,6 +81,13 @@ export default function Navbar() {
         window.addEventListener("resize", () => setResponsiveness());
 
     }, [bookmarks]);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
+    const handleOpen1 = () => setOpen1(true);
+    const handleClose1 = () => setOpen1(false);
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -95,6 +134,23 @@ export default function Navbar() {
         }); 
     }
 
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '80%',
+        bgcolor: 'background.paper',
+        borderRadius: '10px',
+        boxShadow: 24,
+        pt: 4,
+        pl: 4,
+        pr: 4,
+        '@media (min-width:900px)': {
+            width: '40%',
+        }
+    };
+
     const classes = useStyles();
     const displayDesktop = () => {
         return (
@@ -104,7 +160,7 @@ export default function Navbar() {
                     <Stack spacing={3} direction="row">
                         <Button component={Link} to="/" variant="navitem">Home</Button>
                         <Button variant="navitem" onClick={handleMenu} endIcon={<KeyboardArrowDownIcon/>}>Courses</Button>
-                        <Button component={Link} to="/ppt" variant="navitem">Blogs</Button>
+                        <Button component={Link} to="/" variant="navitem">Blogs</Button>
                         <Menu id="menu-appbar" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose} >
                             <MenuItem component={Link} to="/explore/all" onClick={handleClose}>Explore All</MenuItem>
                             <MenuItem component={Link} to="/explore/dsa" onClick={handleClose}>DSA</MenuItem>
@@ -150,8 +206,8 @@ export default function Navbar() {
                             </>
                             :
                             <>
-                                <Button component={Link} to="/login" variant="outlined" color="warning" startIcon={<LoginIcon />}>Login</Button>
-                                <Button component={Link} to="/register" variant="contained" color="warning" startIcon={<PersonAddIcon />}>Register</Button>
+                                <Button onClick={handleOpen1} variant="outlined" color="warning" startIcon={<LoginIcon />}>Login</Button>
+                                <Button onClick={handleOpen1} variant="contained" color="warning" startIcon={<PersonAddIcon />}>Register</Button>
                             </>
                         }
                     </Stack>
@@ -186,14 +242,14 @@ export default function Navbar() {
                     onClose={handleDrawerClose}
                 >
                     <Stack spacing={3}>
-                        <Button component={Link} to="/" variant="navitem">Home</Button>
+                        <Button component={Link} to="/" variant="navitem" onClick={handleDrawerClose}>Home</Button>
                         <Button variant="navitem" onClick={handleMenu} endIcon={<KeyboardArrowDownIcon/>}>Courses</Button>
-                        <Button component={Link} to="/ppt" variant="navitem">Blogs</Button>
+                        <Button component={Link} to="/"  onClick={handleDrawerClose} variant="navitem">Blogs</Button>
                         <Menu id="menu-appbar" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose} >
-                            <MenuItem component={Link} to="/explore/all" onClick={handleClose}>Explore All</MenuItem>
-                            <MenuItem component={Link} to="/explore/dsa" onClick={handleClose}>DSA</MenuItem>
-                            <MenuItem component={Link} to="/explore/web" onClick={handleClose}>Web Dev</MenuItem>
-                            <MenuItem component={Link} to="/explore/mobile" onClick={handleClose}>Mobile Dev</MenuItem>
+                            <MenuItem component={Link} to="/explore/all" onClick={() => {handleClose(); handleDrawerClose();}}>Explore All</MenuItem>
+                            <MenuItem component={Link} to="/explore/dsa" onClick={() => {handleClose(); handleDrawerClose();}}>DSA</MenuItem>
+                            <MenuItem component={Link} to="/explore/web" onClick={() => {handleClose(); handleDrawerClose();}}>Web Dev</MenuItem>
+                            <MenuItem component={Link} to="/explore/mobile" onClick={() => {handleClose(); handleDrawerClose();}}>Mobile Dev</MenuItem>
                         </Menu>
                         {localStorage.getItem('email') ?
                             <>
@@ -228,8 +284,8 @@ export default function Navbar() {
                             </>
                             :
                             <>
-                                <Button component={Link} to="/login" variant="outlined" color="warning" startIcon={<LoginIcon />}>Login</Button>
-                                <Button component={Link} to="/register" variant="contained" color="warning" startIcon={<PersonAddIcon />}>Register</Button>
+                                <Button onClick={() => {handleOpen1(); handleDrawerClose();}} variant="outlined" color="warning" startIcon={<LoginIcon />}>Login</Button>
+                                <Button onClick={() => {handleOpen1(); handleDrawerClose();}} variant="contained" color="warning" startIcon={<PersonAddIcon />}>Register</Button>
                             </>
                         }
                     </Stack>
@@ -241,6 +297,22 @@ export default function Navbar() {
 
     return (
         <header>
+            <Modal open={open1} onClose={handleClose1} >
+                <Box sx={style}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                        <Tabs value={value} onChange={handleChange} variant="fullWidth" centered>
+                            <Tab label="Login" {...a11yProps(0)} />
+                            <Tab label="Register" {...a11yProps(1)} />
+                        </Tabs>
+                    </Box>
+                    <TabPanel value={value} index={0}>
+                        <Login />
+                    </TabPanel>
+                    <TabPanel value={value} index={1}>
+                        <Register />
+                    </TabPanel>
+                </Box>
+            </Modal>
             <AppBar position="fixed" color="transparent" sx={{backgroundColor: '#060238'}}>
                 {mobileView ? displayMobile() : displayDesktop()}
             </AppBar>
