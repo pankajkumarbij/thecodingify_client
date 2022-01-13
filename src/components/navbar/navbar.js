@@ -12,6 +12,7 @@ import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Notifications from '@mui/icons-material/Notifications';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+import { serverUrl } from '../utils/url';
 
 const drawerWidth = 200;
 
@@ -30,7 +31,7 @@ export default function Navbar() {
 
         if(localStorage.getItem('userId')){
             const userId=localStorage.getItem('userId');
-            fetch(`https://thecodingifyserver.herokuapp.com/retrive_bookmark/${userId}`,{
+            fetch(`${serverUrl}retrive_bookmark/${userId}`,{
                 method: 'GET',
             })
             .then(res => res.json())
@@ -76,7 +77,7 @@ export default function Navbar() {
 
     function deletebookmark(subject){
         const userId=localStorage.getItem('userId');
-        fetch(`https://thecodingifyserver.herokuapp.com/delete_bookmark/${userId}/${subject}`, {
+        fetch(`${serverUrl}delete_bookmark/${userId}/${subject}`, {
             method: 'GET',
         })
         .then(res => res.json())

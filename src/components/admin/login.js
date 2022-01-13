@@ -6,6 +6,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import LoginIcon from '@mui/icons-material/Login';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+import {serverUrl} from '../utils/url';
 
 export default function Login(props) {
     
@@ -24,7 +25,7 @@ export default function Login(props) {
     },[error, success]);
      
     function Login() {
-        fetch('https://thecodingifyserver.herokuapp.com/admin', {
+        fetch(`${serverUrl}admin`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

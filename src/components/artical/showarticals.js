@@ -7,6 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useParams } from 'react-router-dom';
 import LoadingButton from '@mui/lab/LoadingButton';
 // import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
+import {serverUrl} from '../utils/url';
 
 const drawerWidth = 300;
 
@@ -61,7 +62,7 @@ export default function PersistentDrawerLeft(props) {
 
         const userId = localStorage.getItem('userId');
 
-        fetch(`https://thecodingifyserver.herokuapp.com/retrive_article_by_subject/${subject}`, {
+        fetch(`${serverUrl}retrive_article_by_subject/${subject}`, {
             method: 'GET'
         })
         .then(res => res.json())
@@ -77,7 +78,7 @@ export default function PersistentDrawerLeft(props) {
             console.log(err);
         })
 
-        fetch(`https://thecodingifyserver.herokuapp.com/retrive_feedback/${userId}/${subject}`, {
+        fetch(`${serverUrl}retrive_feedback/${userId}/${subject}`, {
             method: 'GET'
         })
         .then(res => res.json())
@@ -101,7 +102,7 @@ export default function PersistentDrawerLeft(props) {
 
     function AddFeedback() {
 
-        fetch('https://thecodingifyserver.herokuapp.com/addfeedback', {
+        fetch(`${serverUrl}addfeedback`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

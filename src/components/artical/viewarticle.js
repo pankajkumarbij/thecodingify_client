@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Paper, Typography, } from '@mui/material';
 import { useParams } from 'react-router-dom';
+import {serverUrl} from '../utils/url';
 
 export default function PersistentDrawerLeft(props) {
 
@@ -11,7 +12,7 @@ export default function PersistentDrawerLeft(props) {
 
     useEffect(() => {
 
-        fetch(`https://thecodingifyserver.herokuapp.com/retrive_article/${id}`, {
+        fetch(`${serverUrl}retrive_article/${id}`, {
             method: 'GET'
         })
         .then(res => res.json())

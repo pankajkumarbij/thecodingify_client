@@ -9,6 +9,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import CategoryIcon from '@mui/icons-material/Category';
+import { serverUrl } from '../utils/url';
 
 export default function Explore() {
 
@@ -32,7 +33,7 @@ export default function Explore() {
         const userId=localStorage.getItem('userId');
 
         if(flag){
-            fetch('https://thecodingifyserver.herokuapp.com/retrive_all_categories', {
+            fetch(`${serverUrl}retrive_all_categories`, {
                 method: 'GET',
             })
             .then(res => res.json())
@@ -50,7 +51,7 @@ export default function Explore() {
         }
         
         if(flag2){
-            fetch('https://thecodingifyserver.herokuapp.com/retrive_all_subjects', {
+            fetch(`${serverUrl}retrive_all_subjects`, {
                 method: 'GET',
             })
             .then(res => res.json())
@@ -68,7 +69,7 @@ export default function Explore() {
         }
 
         if(flag3){
-            fetch('https://thecodingifyserver.herokuapp.com/retrive_feedback_by_subject', {
+            fetch(`${serverUrl}retrive_feedback_by_subject`, {
                 method: 'GET',
             })
             .then(res => res.json())
@@ -86,7 +87,7 @@ export default function Explore() {
         }
 
         if(localStorage.getItem('userId')){
-            fetch(`https://thecodingifyserver.herokuapp.com/retrive_bookmark/${userId}`,{
+            fetch(`${serverUrl}retrive_bookmark/${userId}`,{
                 method: 'GET',
             })
             .then(res => res.json())
@@ -96,7 +97,7 @@ export default function Explore() {
         }
 
         if(category!=="All"){
-            fetch(`https://thecodingifyserver.herokuapp.com/retrive_subject/${category}`, {
+            fetch(`${serverUrl}retrive_subject/${category}`, {
                 method: 'GET',
             })
             .then(res => res.json())
@@ -133,7 +134,7 @@ export default function Explore() {
     }
 
     function addbookmark(subject){
-        fetch('https://thecodingifyserver.herokuapp.com/addbookmark', {
+        fetch(`${serverUrl}addbookmark`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -158,7 +159,7 @@ export default function Explore() {
 
     function deletebookmark(subject){
         const userId=localStorage.getItem('userId');
-        fetch(`https://thecodingifyserver.herokuapp.com/delete_bookmark/${userId}/${subject}`, {
+        fetch(`${serverUrl}delete_bookmark/${userId}/${subject}`, {
             method: 'GET',
         })
         .then(res => res.json())

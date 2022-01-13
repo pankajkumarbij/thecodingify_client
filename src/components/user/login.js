@@ -5,7 +5,7 @@ import { Paper, Typography, Button, Stack, Grid, TextField, InputAdornment, Form
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import LoginIcon from '@mui/icons-material/Login';
-
+import { serverUrl } from '../utils/url';
 export default function Login(props) {
     
     const [email, setEmail]=useState("");
@@ -23,7 +23,7 @@ export default function Login(props) {
     },[error, success]);
      
     function Login() {
-        fetch('https://thecodingifyserver.herokuapp.com/login', {
+        fetch(`${serverUrl}login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

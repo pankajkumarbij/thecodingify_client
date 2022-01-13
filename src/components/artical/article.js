@@ -5,6 +5,7 @@ import { makeStyles } from '@mui/styles';
 import PublishIcon from '@mui/icons-material/Publish';
 import JoditEditor from "jodit-react";
 import Add from '@mui/icons-material/Add';
+import {serverUrl} from '../utils/url';
 
 export default function CreateArticle(){
 
@@ -21,7 +22,7 @@ export default function CreateArticle(){
     useEffect(() => {
 
         if(flag){
-            fetch('https://thecodingifyserver.herokuapp.com/retrive_all_categories', {
+            fetch(`${serverUrl}retrive_all_categories`, {
                 method: 'GET',
             })
             .then(res => res.json())
@@ -39,7 +40,7 @@ export default function CreateArticle(){
         }
 
         if(category){
-            fetch(`https://thecodingifyserver.herokuapp.com/retrive_subject/${category}`, {
+            fetch(`${serverUrl}retrive_subject/${category}`, {
                 method: 'GET',
             })
             .then(res => res.json())
@@ -65,7 +66,7 @@ export default function CreateArticle(){
     },[error, success, categories, flag, category]);
 
     function Publish() {
-        fetch('https://thecodingifyserver.herokuapp.com/articlepublish', {
+        fetch(`${serverUrl}articlepublish`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

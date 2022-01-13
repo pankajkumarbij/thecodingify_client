@@ -8,6 +8,7 @@ import RemoveRedEye from '@mui/icons-material/RemoveRedEye';
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@mui/material/styles';
+import {serverUrl} from '../utils/url';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -54,7 +55,7 @@ export default function Dashboard() {
 
     useEffect(()=>{
         if(localStorage.getItem('userId')) {
-            fetch(`https://thecodingifyserver.herokuapp.com/retrive_article_by_userId/${userId}`, {
+            fetch(`${serverUrl}retrive_article_by_userId/${userId}`, {
                 method: 'GET'
             })
             .then(res => res.json())
@@ -68,7 +69,7 @@ export default function Dashboard() {
     }, [data, userId]);
 
     function DeleteArticle(id){
-        fetch(`https://thecodingifyserver.herokuapp.com/delete_article/${id}`, {
+        fetch(`${serverUrl}delete_article/${id}`, {
             method: 'GET'
         })
         .then(res => res.json())

@@ -4,7 +4,7 @@ import { Paper, Typography, Button, Stack, Grid, TextField, InputAdornment, Form
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-
+import {serverUrl} from '../utils/url';
 export default function Register() {
 
     const [name, setName]=useState("");
@@ -25,7 +25,7 @@ export default function Register() {
     },[error, success]);
 
     function Register() {
-        fetch('https://thecodingifyserver.herokuapp.com/register', {
+        fetch(`${serverUrl}register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

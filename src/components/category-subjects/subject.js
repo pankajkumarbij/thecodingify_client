@@ -3,6 +3,7 @@ import { makeStyles } from '@mui/styles';
 import { Paper, Typography, Button, Stack, Grid, TextField, Alert, MenuItem, Backdrop, CircularProgress, } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { useHistory } from 'react-router-dom';
+import {serverUrl} from '../utils/url';
 
 export default function AddSubject() {
 
@@ -20,7 +21,7 @@ export default function AddSubject() {
     useEffect(() => {
 
         if(flag){
-            fetch('https://thecodingifyserver.herokuapp.com/retrive_all_categories', {
+            fetch(`${serverUrl}retrive_all_categories`, {
                 method: 'GET',
             })
             .then(res => res.json())
@@ -38,7 +39,7 @@ export default function AddSubject() {
         }
 
         if(url){
-            fetch('https://thecodingifyserver.herokuapp.com/addsubject', {
+            fetch(`${serverUrl}addsubject`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

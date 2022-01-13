@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, IconButton, Snackbar, Alert, Button } from '@mui/material';
 import RemoveRedEye from '@mui/icons-material/RemoveRedEye';
+import {serverUrl} from '../utils/url';
 
 export default function AdminDashboard() {
 
@@ -14,7 +15,7 @@ export default function AdminDashboard() {
 
     useEffect(()=>{
         if(localStorage.getItem('userId')) {
-            fetch(`https://thecodingifyserver.herokuapp.com/retrive_all_articles`, {
+            fetch(`${serverUrl}retrive_all_articles`, {
                 method: 'GET'
             })
             .then(res => res.json())
@@ -28,7 +29,7 @@ export default function AdminDashboard() {
     }, [data, userId]);
 
     function updateStatus(id, status) {
-        fetch(`https://thecodingifyserver.herokuapp.com/update_article_status/${id}`, {
+        fetch(`${serverUrl}update_article_status/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

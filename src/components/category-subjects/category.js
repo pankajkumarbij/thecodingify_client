@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
 import { Paper, Typography, Button, Stack, Grid, TextField, Alert, } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import {serverUrl} from '../utils/url';
 
 export default function AddCategory() {
 
@@ -18,7 +19,7 @@ export default function AddCategory() {
     },[error, success]);
 
     function AddCategory() {
-        fetch('https://thecodingifyserver.herokuapp.com/addcategory', {
+        fetch(`${serverUrl}addcategory`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

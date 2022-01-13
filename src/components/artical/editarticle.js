@@ -5,6 +5,7 @@ import { makeStyles } from '@mui/styles';
 import PublishIcon from '@mui/icons-material/Publish';
 import JoditEditor from "jodit-react";
 import { useParams } from 'react-router-dom';
+import {serverUrl} from '../utils/url';
 
 export default function CreateArticle(){
 
@@ -21,7 +22,7 @@ export default function CreateArticle(){
 
     useEffect(() => {
 
-        fetch(`https://thecodingifyserver.herokuapp.com/retrive_article/${id}`, {
+        fetch(`${serverUrl}retrive_article/${id}`, {
             method: 'GET'
         })
         .then(res => res.json())
@@ -47,7 +48,7 @@ export default function CreateArticle(){
     },[error, success, category, id, history]);
 
     function Publish() {
-        fetch(`https://thecodingifyserver.herokuapp.com/update_article/${id}`, {
+        fetch(`${serverUrl}update_article/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
