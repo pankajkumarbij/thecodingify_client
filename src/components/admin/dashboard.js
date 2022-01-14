@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, IconButton, Snackbar, Alert, Button } from '@mui/material';
 import RemoveRedEye from '@mui/icons-material/RemoveRedEye';
-import {serverUrl} from '../utils/url';
+
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 export default function AdminDashboard() {
 

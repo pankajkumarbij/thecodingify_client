@@ -6,9 +6,8 @@ import TopicIcon from '@mui/icons-material/Topic';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useParams } from 'react-router-dom';
 import LoadingButton from '@mui/lab/LoadingButton';
-// import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
-import {serverUrl} from '../utils/url';
 
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 const drawerWidth = 300;
 
 const labels = {

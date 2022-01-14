@@ -3,7 +3,8 @@ import { makeStyles } from '@mui/styles';
 import { Paper, Typography, Button, Stack, Grid, TextField, Alert, MenuItem, Backdrop, CircularProgress, } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { useHistory } from 'react-router-dom';
-import {serverUrl} from '../utils/url';
+
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 export default function AddSubject() {
 

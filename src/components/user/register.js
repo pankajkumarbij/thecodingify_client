@@ -4,7 +4,9 @@ import { Button, Stack, Grid, TextField, InputAdornment, FormControl, InputLabel
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import {serverUrl} from '../utils/url';
+
+const serverUrl = process.env.REACT_APP_SERVER_URL;
+
 export default function Register() {
 
     const [firstName, setFirstName]=useState("");

@@ -13,10 +13,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Notifications from '@mui/icons-material/Notifications';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import PropTypes from 'prop-types';
-import { serverUrl } from '../utils/url';
 import Login from '../user/login';
 import Register from '../user/register';
 
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 const drawerWidth = 200;
 
 function TabPanel(props) {

@@ -4,7 +4,11 @@ import { Button, Stack, Grid, TextField, InputAdornment, FormControl, InputLabel
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import LoginIcon from '@mui/icons-material/Login';
-import { serverUrl } from '../utils/url';
+
+const serverUrl = process.env.REACT_APP_SERVER_URL;
+
+console.log(serverUrl);
+
 export default function Login(props) {
     
     const [email, setEmail]=useState("");

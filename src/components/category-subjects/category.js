@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
 import { Paper, Typography, Button, Stack, Grid, TextField, Alert, } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import {serverUrl} from '../utils/url';
+
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 export default function AddCategory() {
 

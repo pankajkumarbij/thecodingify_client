@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Paper, Typography, } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import {serverUrl} from '../utils/url';
+
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 export default function PersistentDrawerLeft(props) {
 

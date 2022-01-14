@@ -5,7 +5,8 @@ import { makeStyles } from '@mui/styles';
 import PublishIcon from '@mui/icons-material/Publish';
 import JoditEditor from "jodit-react";
 import Add from '@mui/icons-material/Add';
-import {serverUrl} from '../utils/url';
+
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 export default function CreateArticle(){
 

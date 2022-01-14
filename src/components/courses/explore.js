@@ -9,7 +9,8 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import CategoryIcon from '@mui/icons-material/Category';
-import { serverUrl } from '../utils/url';
+
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 export default function Explore() {
 

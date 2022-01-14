@@ -8,7 +8,8 @@ import RemoveRedEye from '@mui/icons-material/RemoveRedEye';
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@mui/material/styles';
-import {serverUrl} from '../utils/url';
+
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
