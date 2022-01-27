@@ -4,110 +4,105 @@ import { Button, Stack, Grid, TextField, InputAdornment, FormControl, InputLabel
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import LoginIcon from '@mui/icons-material/Login';
+import axios from 'axios';
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-console.log(serverUrl);
-
-export default function Login(props) {
+export default function Login() {
     
-    const [email, setEmail]=useState("");
-    const [password, setPassword]=useState("");
-    const [showPassword, setShowPassword]=useState(false);
-    const [error, setError]=useState("");
-    const [success, setSuccess]=useState("");
+  const [email, setEmail]=useState("");
+  const [password, setPassword]=useState("");
+  const [showPassword, setShowPassword]=useState(false);
+  const [error, setError]=useState("");
+  const [success, setSuccess]=useState("");
 
-    useEffect(() => {
-        const timeout=setTimeout(() => {
-            setError("");
-            setSuccess("");
-         }, 3000);
-         return () => clearTimeout(timeout);
-    },[error, success]);
-     
-    function Login() {
-        fetch(`${serverUrl}login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            if(data.error){
-                setError(data.error);
-            }
-            if(data.message.success){
-                setSuccess(data.message.success);
-                localStorage.setItem('name',data.name);
-                localStorage.setItem('email',data.email);
-                localStorage.setItem('token',data.token);
-                localStorage.setItem('userId',data.id);
-                window.location.reload(false);
-            }
-        })
-        .catch(err=>{
-            console.log(err.message);
-        }); 
+  useEffect(() => {
+
+    if(error || success) {
+      const timeout=setTimeout(() => {
+        setError("");
+        setSuccess("");
+        console.log("called");
+      }, 3000);
+      return () => clearTimeout(timeout);
     }
 
-    const classes = useStyles();
-    return (
-        <>
-            <Grid container spacing={2} className={classes.container}>
-                <Grid item xs={12} sm={12} align="center" justify="center">
-                    <Stack spacing={2}>
-                        <TextField label="Email" variant="outlined" color="warning" type="email" onChange={(e)=>setEmail(e.target.value)} />
-                        <FormControl variant="outlined" color="warning">
-                            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                            <OutlinedInput
-                                id="outlined-adornment-password"
-                                type={showPassword ? 'text' : 'password'}
-                                onChange={(e)=>setPassword(e.target.value)}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={()=>setShowPassword(!showPassword)}
-                                            edge="end"
-                                            >
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                label="Password"
-                                color="warning"
-                            />
-                        </FormControl>
-                        <Button variant="contained" color="warning" endIcon={<LoginIcon />} onClick={()=>Login()} >Login</Button>
-                    </Stack>
-                    {error!=="" &&
-                        <>
-                            <br/>
-                            <Alert variant="outlined" severity="error">{error}!</Alert>
-                        </>
-                    }
-                    {success!=="" &&
-                        <>
-                            <br/>
-                            <Alert variant="outlined" severity="success">{success}!</Alert>
-                        </>
-                    }
-                </Grid>
-            </Grid>
-            <br/>
-            <br/>
-        </>
-    );
+  },[error, success]);
+    
+  function Login() {
+    axios.post(serverUrl+'login', {
+      email,
+      password
+    })
+    .then(function (result) {
+      console.log(result);
+      if(result.data.error){
+        setError(result.data.error);
+      }
+      if(result.data.message.success){
+        setSuccess(result.data.message.success);
+        localStorage.setItem('token', result.data.token);
+        window.location.reload(false);
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    }); 
+  }
+
+  const classes = useStyles();
+
+  return (
+    <>
+      <Grid container spacing={2} className={classes.container}>
+        <Grid item xs={12} sm={12} align="center" justify="center">
+          <Stack spacing={2}>
+            <TextField label="Email" variant="outlined" color="warning" type="email" onChange={(e)=>setEmail(e.target.value)} />
+            <FormControl variant="outlined" color="warning">
+              <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-password"
+                type={showPassword ? 'text' : 'password'}
+                onChange={(e)=>setPassword(e.target.value)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={()=>setShowPassword(!showPassword)}
+                      edge="end"
+                      >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+                color="warning"
+              />
+            </FormControl>
+            <Button variant="contained" color="warning" endIcon={<LoginIcon />} onClick={()=>Login()} >Login</Button>
+          </Stack>
+          {error!=="" &&
+            <>
+              <br/>
+              <Alert variant="outlined" severity="error">{error}!</Alert>
+            </>
+          }
+          {success!=="" &&
+            <>
+              <br/>
+              <Alert variant="outlined" severity="success">{success}!</Alert>
+            </>
+          }
+        </Grid>
+      </Grid>
+      <br/>
+      <br/>
+    </>
+  );
 }
 
 const useStyles = makeStyles({
-    container: {
-        paddingTop: '30px', 
-    },
+  container: {
+    paddingTop: '30px', 
+  },
 });
