@@ -10,7 +10,7 @@ export const Retrieve_All_Subjects = () => {
 }
 
 export const Retrieve_Subjects_By_Category = (category) => {
-  return axios.get(serverUrl + 'retrive_subject/' + category)
+  return axios.get(serverUrl + 'retrieve_subject/' + category)
   .then(res => {
     return res.data;
   })

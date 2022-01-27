@@ -12,7 +12,7 @@ export default function PersistentDrawerLeft(props) {
 
   useEffect(() => {
 
-    Retrive_Article_By_Id()
+    Retrive_Article_By_Id(id)
     .then(result => {
       setContent(result[0].content);
       setTitle(result[0].title);

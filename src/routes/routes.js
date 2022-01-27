@@ -12,6 +12,7 @@ import Admin from '../components/admin/login';
 import AdminDashboard from '../components/admin/dashboard';
 import EditArticle from '../components/artical/editarticle';
 import ViewArticle from '../components/artical/viewarticle';
+import { user } from '../utils/user';
 
 export default function Routes() {
 
@@ -19,7 +20,7 @@ export default function Routes() {
     <>
       <Router>
         <Navbar />
-        {localStorage.getItem('token') ?
+        {user!=="no user" ?
           <Switch>
             <Route path="/" exact>
               <Home />
@@ -29,7 +30,7 @@ export default function Routes() {
               <CreateArticle />
               <Footer />
             </Route>
-            {localStorage.getItem('name')==="Codingify" &&
+            {user.email==="codingify.tech@gmail.com" &&
               <Route path="/admindashboard">
                 <AdminDashboard />
                 <Footer />

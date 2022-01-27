@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Alert, Button, Paper, Stack, TextField, MenuItem, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import PublishIcon from '@mui/icons-material/Publish';
@@ -8,6 +8,8 @@ import Add from '@mui/icons-material/Add';
 import axios from 'axios';
 import { Retrieve_All_Categories } from '../../services/category';
 import { Retrieve_Subjects_By_Category } from '../../services/subject';
+import { headers } from '../../utils/header';
+import { user } from '../../utils/user';
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -21,7 +23,9 @@ export default function CreateArticle(){
   const [subject, setSubject]=useState("");
   const [subjects, setSubjects]=useState("");
   const [title, setTitle]=useState("");
-    
+  
+  let history = useHistory();
+
   useEffect(() => {
 
     Retrieve_All_Categories()
@@ -30,7 +34,7 @@ export default function CreateArticle(){
     })
 
     if(category){
-      Retrieve_Subjects_By_Category()
+      Retrieve_Subjects_By_Category(category)
       .then(result => {
         setSubjects(result);
       })
@@ -46,19 +50,22 @@ export default function CreateArticle(){
 
   function Publish() {
     axios.post(serverUrl+'articlepublish', {
-      userId: localStorage.getItem('userId'),
-      name: localStorage.getItem('name'),
+      userId: user.id,
+      name: user.fName+" "+user.lName,
       category: category,
       subject: subject,
       title: title,
       content: data,
+    },{
+      headers
     })
     .then(data => {
-      if(data.error){
-        setError(data.error);
+      if(data.data.error){
+        setError(data.data.error);
       }
-      if(data.success){
-        setSuccess(data.success);
+      if(data.data.success){
+        setSuccess(data.data.success);
+        history.push('/dashboard');
       }
     })
     .catch(error => {

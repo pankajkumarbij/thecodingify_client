@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { Grid, Typography, Button, Paper, TextField, MenuItem, Rating, IconButton, Avatar, Divider, ButtonGroup, Snackbar, Alert } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
@@ -14,16 +14,18 @@ import { Retrieve_All_Categories } from '../../services/category';
 import { Retrieve_All_Subjects } from '../../services/subject';
 import { Retrieve_Feedback_By_Subject } from '../../services/feedback';
 import { Retrieve_Bookmark_By_UserId } from '../../services/bookmark';
+import { headers } from '../../utils/header';
+import axios from 'axios';
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 export default function Explore() {
 
-  const { cat } = useParams();
+  // const { cat } = useParams();
+  // console.log(cat);
 
   const [category, setCategory]=useState("All");
   const [categories, setCategories]=useState("");
-  const [subjects, setSubjects]=useState("");
   const [allSubjects, setAllSubjects]=useState("");
   const [searchQuery, setSearchQuery] = useState('');
   const [copied, setCopied] = useState("");
@@ -32,8 +34,6 @@ export default function Explore() {
   const [feedbacks, setFeedbacks] = useState();
 
   useEffect(() => {
-
-    const userId=user.id;
     
     Retrieve_All_Categories()
     .then(result => {
@@ -65,19 +65,14 @@ export default function Explore() {
       }
     })
 
-    // if(userId){
-    //   Retrieve_Bookmark_By_UserId(userId)
-    //   .then(result => {
-    //     if(result.error){
-    //       console.log(result.error);
-    //     }
-    //     else{
-    //       setBookmarks(result);
-    //     }
-    //   })
-    // }
+    if(user.id){
+      Retrieve_Bookmark_By_UserId(user.id)
+      .then(result => {
+          setBookmarks(result);
+      })
+    }
 
-  },[categories, category, bookmarks, cat, feedbacks]);
+  },[bookmarks]);
   
   const handleClose = (event, reason) => {
 
@@ -103,48 +98,38 @@ export default function Explore() {
 
   function addbookmark(subject){
 
-    fetch(`${serverUrl}addbookmark`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            userId: localStorage.getItem('userId'),
-            subject: subject,
-        })
+    axios.post(serverUrl+'addbookmark',{
+      userId: user.id,
+      subject: subject,
+    },{
+      headers
     })
-    .then(res => res.json())
     .then(data => {
       if(data.success){
         setCopied("Bookmark added successfully !!");
         setOpen(true);
       }
-      console.log(data);
     })
     .catch(err=>{
       console.log(err.message);
-    }); 
+    });
 
   }
 
   function deletebookmark(subject){
 
-    const userId=localStorage.getItem('userId');
-    fetch(`${serverUrl}delete_bookmark/${userId}/${subject}`, {
-      method: 'GET',
+    axios.get(serverUrl + 'delete_bookmark/' + user.id + "/" + subject, {
+      headers
     })
-    .then(res => res.json())
     .then(data => {
       if(data.success){
         setCopied("Bookmark removed successfully !!");
         setOpen(true);
       }
-      console.log(data);
     })
     .catch(err=>{
       console.log(err.message);
     }); 
-
   }
 
   const classes = useStyles();
@@ -170,86 +155,96 @@ export default function Explore() {
       <br/>
       {categories &&
         categories.map(catitem => {
-          if(category==="All" || catitem.category===category)
-          return(
-            <>
-              <Grid container spacing={1} className={classes.courses}>
-                <Grid item xs={12} sm={12} align="center" justify="center">
-                  <u><Typography variant="h5">{catitem.category} Courses</Typography></u>
+          if(category==="All" || catitem.category===category){
+            return(
+              <>
+                <Grid container spacing={1} className={classes.courses}>
+                  <Grid item xs={12} sm={12} align="center" justify="center">
+                    <u><Typography variant="h5">{catitem.category} Courses</Typography></u>
+                  </Grid>
                 </Grid>
-              </Grid>
-              <br/>
-              <Grid container spacing={5} className={classes.courses}>
-                {allSubjects && allSubjects.map(item => {
-                  if(item.category===catitem.category){
-                    if(item.subject.toUpperCase().search(searchQuery.toUpperCase())!==-1){
-                      return (
-                        <Grid item xs={12} sm={3} align="center" justify="center">
-                          <div className={classes.coursecard}>
-                            <Paper elevation={24} className={classes.papers}>
-                              <div style={{position: 'relative'}}>
-                                <img src={item.image} alt="dsa" className={classes.img}/>
-                                <div style={{ position: 'absolute', right: '0px', top: '0px', backgroundColor: '#060238' }}>
-                                  <ButtonGroup orientation="vertical" variant="outlined">
-                                    <IconButton>
-                                      {bookmarks && bookmarks.find(({subject})=>subject===item.subject) ?
-                                      <BookmarkIcon color="warning" onClick={()=>deletebookmark(item.subject)} />
-                                      :
-                                      <BookmarkBorderIcon color="warning" onClick={()=>addbookmark(item.subject)} />
-                                      }
-                                    </IconButton>
-                                    <IconButton>
-                                      <ShareIcon color="warning" onClick={ ()=>copy(item.subject) } />
-                                    </IconButton>
-                                  </ButtonGroup>
+                <br/>
+                <Grid container spacing={5} className={classes.courses}>
+                  {allSubjects && allSubjects.map(item => {
+                    if(item.category===catitem.category){
+                      if(item.subject.toUpperCase().search(searchQuery.toUpperCase())!==-1){
+                        return (
+                          <Grid item xs={12} sm={3} align="center" justify="center">
+                            <div className={classes.coursecard}>
+                              <Paper elevation={24} className={classes.papers}>
+                                <div style={{position: 'relative'}}>
+                                  <img src={item.image} alt="dsa" className={classes.img}/>
+                                  <div style={{ position: 'absolute', right: '0px', top: '0px', backgroundColor: '#060238' }}>
+                                    <ButtonGroup orientation="vertical" variant="outlined">
+                                      <IconButton>
+                                        {bookmarks && bookmarks.find(({subject})=>subject===item.subject) ?
+                                        <BookmarkIcon color="warning" onClick={()=>deletebookmark(item.subject)} />
+                                        :
+                                        <BookmarkBorderIcon color="warning" onClick={()=>addbookmark(item.subject)} />
+                                        }
+                                      </IconButton>
+                                      <IconButton>
+                                        <ShareIcon color="warning" onClick={ ()=>copy(item.subject) } />
+                                      </IconButton>
+                                    </ButtonGroup>
+                                  </div>
                                 </div>
-                              </div>
-                              <u><Typography variant="h6" className={classes.coursestypo}>{item.subject}</Typography></u>
-                              <div style={{ display: 'flex', justifyContent: 'space-between', paddingLeft: '12px', paddingRight: '12px' }}>
-                                <div style={{ display: 'flex' }}>
-                                  <CategoryIcon style={{marginTop: '11px', marginBottom: '15px'}} /> &nbsp;
-                                  <Typography variant="p" style={{color: 'gray', marginTop: '13px', marginBottom: '15px'}}>{catitem.category}</Typography>
+                                <u><Typography variant="h6" className={classes.coursestypo}>{item.subject}</Typography></u>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', paddingLeft: '12px', paddingRight: '12px' }}>
+                                  <div style={{ display: 'flex' }}>
+                                    <CategoryIcon style={{marginTop: '11px', marginBottom: '15px'}} /> &nbsp;
+                                    <Typography variant="p" style={{color: 'gray', marginTop: '13px', marginBottom: '15px'}}>{catitem.category}</Typography>
+                                  </div>
+                                  <div style={{ display: 'flex' }}>
+                                    <MonetizationOnIcon style={{marginTop: '11px', marginBottom: '15px'}} /> &nbsp;
+                                    <Typography variant="p" style={{color: 'gray', marginTop: '13px', marginBottom: '15px'}}>Free</Typography>
+                                  </div>
                                 </div>
-                                <div style={{ display: 'flex' }}>
-                                  <MonetizationOnIcon style={{marginTop: '11px', marginBottom: '15px'}} /> &nbsp;
-                                  <Typography variant="p" style={{color: 'gray', marginTop: '13px', marginBottom: '15px'}}>Free</Typography>
-                                </div>
-                              </div>
-                              <Divider/>
-                              <div style={{ display: 'flex', justifyContent: 'space-between', paddingLeft: '12px', paddingRight: '12px' }}>
-                                <div style={{ display: 'flex' }}>
-                                {feedbacks && feedbacks.map((fi)=>{
-                                  if(fi._id===item.subject)
-                                  {
+                                <Divider/>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', paddingLeft: '12px', paddingRight: '12px' }}>
+                                  <div style={{ display: 'flex' }}>
+                                  {feedbacks && feedbacks.map((fi)=>{
+                                    if(fi._id===item.subject)
+                                    {
+                                      return (
+                                        <>
+                                          <Rating name="read-only" value={fi.avgrating} readOnly precision={0.5} sx={{marginTop: '15px'}} /> &nbsp;
+                                          <p style={{color: 'gray', marginTop: '19px'}}>{fi.count} votes</p>
+                                        </>
+                                      )
+                                    }
                                     return (
-                                      <>
-                                        <Rating name="read-only" value={fi.avgrating} readOnly precision={0.5} sx={{marginTop: '15px'}} /> &nbsp;
-                                        <p style={{color: 'gray', marginTop: '19px'}}>{fi.count} votes</p>
-                                      </>
+                                      <></>
                                     )
-                                  }
-                                  return (
-                                    <></>
-                                  )
-                                })}
+                                  })}
+                                  </div>
+                                  <Link to={"/showarticals/"+item.subject}><Avatar sx={{ bgcolor: '#060238', marginTop: '10px', }}><ArrowRightAltIcon /></Avatar></Link>
                                 </div>
-                                <Link to={"/showarticals/"+item.subject}><Avatar sx={{ bgcolor: '#060238', marginTop: '10px', }}><ArrowRightAltIcon /></Avatar></Link>
-                              </div>
-                            </Paper>
-                          </div>
-                        </Grid>
-                      ) 
-                    }      
+                              </Paper>
+                            </div>
+                          </Grid>
+                        ) 
+                      } 
+                      return(
+                        <></>
+                      )   
+                    }
+                    return(
+                      <></>
+                    )
                   }
-                  return(
-                    <></>
-                  )
-                })}
+                )}
               </Grid>
               <br/>
               <br/>
             </>
           )
+          }
+          else{
+            return(
+              <></>
+            )
+          }
         })
       }
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>

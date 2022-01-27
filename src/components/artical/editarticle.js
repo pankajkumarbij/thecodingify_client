@@ -7,6 +7,8 @@ import JoditEditor from "jodit-react";
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Retrive_Article_By_Id } from '../../services/article';
+import { user } from '../../utils/user';
+import { headers } from '../../utils/header';
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -27,7 +29,7 @@ export default function CreateArticle(){
 
     Retrive_Article_By_Id(id)
     .then(data => {
-      if(data[0].userId!==localStorage.getItem('userId')){
+      if(data[0].userId!==user.id){
         history.push("/");
       }
       setCategory(data[0].category);
@@ -46,21 +48,23 @@ export default function CreateArticle(){
 
   function Publish() {
 
-    axios.post(serverUrl+'update_article/'+id, {
-      userId: localStorage.getItem('userId'),
-      name: localStorage.getItem('name'),
+    axios.put(serverUrl+'update_article/'+id, {
+      userId: user.id,
+      name: user.fName+" "+user.lName,
       category: category,
       subject: subject,
       title: title,
       content: data,
+    },{
+      headers
     })
     .then(data => {
-      if(data.error){
-        setError(data.error);
+      if(data.data.error){
+        setError(data.data.error);
       }
-      if(data.success){
-        setSuccess(data.success);
-        // history.push("/dashboard");
+      if(data.data.success){
+        setSuccess(data.data.success);
+        history.push("/dashboard");
       }
     })
     .catch(error => {

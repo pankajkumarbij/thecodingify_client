@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, IconButton, Snackbar, Alert, Button } from '@mui/material';
 import RemoveRedEye from '@mui/icons-material/RemoveRedEye';
+import { user } from '../../utils/user';
+import { Retrive_All_Articles } from '../../services/article';
+import axios from 'axios';
+import { headers } from '../../utils/header';
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -12,37 +16,23 @@ export default function AdminDashboard() {
     const [message, setMessage] = useState();
     const [open, setOpen] = useState(false);
 
-    const userId=localStorage.getItem('userId');
-
     useEffect(()=>{
-        if(localStorage.getItem('userId')) {
-            fetch(`${serverUrl}retrive_all_articles`, {
-                method: 'GET'
-            })
-            .then(res => res.json())
+        if(user.id) {
+            Retrive_All_Articles()
             .then(result => {
                 setData(result);
             })
-            .catch(err => {
-                console.log(err);
-            })
         }
-    }, [data, userId]);
+    }, [data]);
 
     function updateStatus(id, status) {
-        fetch(`${serverUrl}update_article_status/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                status: status
-            })
+        axios.put(serverUrl+'update_article_status/'+id, {
+            status: status
+        },{
+            headers
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
         .then(data => {
-            setMessage(data.message);
+            setMessage(data.data.message);
             setOpen(true);
         })
         .catch(err=>{

@@ -9,6 +9,8 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { Retrive_Article_By_Subject } from '../../services/article';
 import { Retrieve_Feedback_By_Subject_By_userId } from '../../services/feedback';
 import axios from 'axios';
+import { headers } from '../../utils/header';
+import { user } from '../../utils/user';
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 const drawerWidth = 300;
@@ -62,8 +64,6 @@ export default function PersistentDrawerLeft(props) {
 
   useEffect(() => {
 
-    const userId = localStorage.getItem('userId');
-
     if(subject){
       Retrive_Article_By_Subject(subject)
       .then(result => {
@@ -76,11 +76,13 @@ export default function PersistentDrawerLeft(props) {
       })
     }
 
-    if(subject && userId){
-      Retrieve_Feedback_By_Subject_By_userId()
+    if(subject && user.id){
+      Retrieve_Feedback_By_Subject_By_userId(subject, user.id)
       .then(result => {
+        console.log(result);
         if(result.length!==0){
           setFeedbacks(result[0].rating);
+          console.log(result);
         }
         else{
           setFeedbacks(0);
@@ -88,7 +90,7 @@ export default function PersistentDrawerLeft(props) {
       })
     }
 
-  },[data, content, title, subject, feedbacks])
+  },[subject, title, feedbacks])
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -96,10 +98,12 @@ export default function PersistentDrawerLeft(props) {
 
   function AddFeedback() {
     axios.post(serverUrl+'addfeedback', {
-      userId: localStorage.getItem('userId'),
+      userId: user.id,
       rating: rating,
       feedback: feedback,
       subject: subject,
+    },{
+      headers
     })
     .then(data => {
       console.log(data);
@@ -142,14 +146,21 @@ export default function PersistentDrawerLeft(props) {
     <List>
       {data ? 
         data.map((item, index) => {
-          return (
-            <ListItem button key={index} onClick={()=> {setContent(item.content);setTitle(item.title);setName(item.name)}}>
-              <ListItemIcon>
-                <TopicIcon color="warning" />
-              </ListItemIcon>
-              <ListItemText primary={item.title} />
-            </ListItem>
-          )
+          if(item.status==="Approved"){
+            return (
+              <ListItem button key={index} onClick={()=> {setContent(item.content);setTitle(item.title);setName(item.name)}}>
+                <ListItemIcon>
+                  <TopicIcon color="warning" />
+                </ListItemIcon>
+                <ListItemText primary={item.title} />
+              </ListItem>
+            )
+          }
+          else{
+            return(
+              <></>
+            )
+          }
         })
         :
         <LoadingButton

@@ -16,7 +16,9 @@ import PropTypes from 'prop-types';
 import Login from '../user/login';
 import Register from '../user/register';
 import { user } from '../../utils/user';
-console.log(user);
+import { Retrieve_Bookmark_By_UserId } from '../../services/bookmark';
+import axios from 'axios';
+import { headers } from '../../utils/header';
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 const drawerWidth = 200;
@@ -63,14 +65,10 @@ export default function Navbar() {
 
   useEffect(() => {
 
-    if(localStorage.getItem('userId')){
-      const userId=localStorage.getItem('userId');
-      fetch(`${serverUrl}retrive_bookmark/${userId}`,{
-        method: 'GET',
-      })
-      .then(res => res.json())
-      .then(data => {
-        setBookmarks(data);
+    if(user.id){
+      Retrieve_Bookmark_By_UserId(user.id)
+      .then(result => {
+        setBookmarks(result);
       })
     }
 
@@ -106,32 +104,21 @@ export default function Navbar() {
   };
 
   function Logout(){
-    localStorage.removeItem('name');
-    localStorage.removeItem('email');
     localStorage.removeItem('token');
-    localStorage.removeItem('userId');
     history.push("/");
     window.location.reload(false);
   }
 
   function deletebookmark(subject){
-    const userId=localStorage.getItem('userId');
-    fetch(`${serverUrl}delete_bookmark/${userId}/${subject}`, {
-      method: 'GET',
+    axios.get(serverUrl+'delete_bookmark/'+user.id+"/"+subject, {
+      headers
     })
-    .then(res => res.json())
-    .then(data => {
-      // if(data.error){
-      //     setError(data.error);
-      // }
-      // if(data.success){
-      //     setSuccess(data.success);
-      // }
-      console.log(data);
+    .then(result => {
+      console.log(result);
     })
-    .catch(err=>{
-      console.log(err.message);
-    }); 
+    .catch(err => {
+      console.log(err);
+    })
   }
 
   const style = {
@@ -167,7 +154,7 @@ export default function Navbar() {
               <MenuItem component={Link} to="/explore/web" onClick={handleClose}>Web Dev</MenuItem>
               <MenuItem component={Link} to="/explore/mobile" onClick={handleClose}>Mobile Dev</MenuItem>
             </Menu>
-            {localStorage.getItem('email') ?
+            {user.email ?
               <>
                 <IconButton>
                   <BookmarksIcon size="small" style={{color: 'white'}} onClick={handleClick}/>
@@ -198,7 +185,7 @@ export default function Navbar() {
                 <IconButton>
                   <Notifications size="small" style={{color: 'white'}} onClick={handleClick}/>
                 </IconButton>
-                {localStorage.getItem('name')==="Codingify" &&
+                {user.email==="codingify.tech@gmail.com" &&
                   <Button component={Link} to="/admindashboard" variant="outlined" color="error" startIcon={<AdminPanelSettingsOutlinedIcon />}>Admin Panel</Button>
                 }
                 <Button component={Link} to="/dashboard" variant="outlined" color="warning" startIcon={<AccountCircleRoundedIcon />}>Dashboard</Button>
@@ -251,7 +238,7 @@ export default function Navbar() {
               <MenuItem component={Link} to="/explore/web" onClick={() => {handleClose(); handleDrawerClose();}}>Web Dev</MenuItem>
               <MenuItem component={Link} to="/explore/mobile" onClick={() => {handleClose(); handleDrawerClose();}}>Mobile Dev</MenuItem>
             </Menu>
-            {localStorage.getItem('email') ?
+            {user.email ?
               <>
                 <IconButton>
                   <BookmarksIcon style={{color: 'white'}} onClick={handleClick} />

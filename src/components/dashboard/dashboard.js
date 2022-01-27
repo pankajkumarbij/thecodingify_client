@@ -8,6 +8,10 @@ import RemoveRedEye from '@mui/icons-material/RemoveRedEye';
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@mui/material/styles';
+import { user } from '../../utils/user';
+import { Retrive_Article_By_userId } from '../../services/article';
+import axios from 'axios';
+import { headers } from '../../utils/header';
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -55,28 +59,22 @@ export default function Dashboard() {
   const userId=localStorage.getItem('userId');
 
   useEffect(()=>{
-    if(localStorage.getItem('userId')) {
-      fetch(`${serverUrl}retrive_article_by_userId/${userId}`, {
-        method: 'GET'
-      })
-      .then(res => res.json())
+
+    if(user.id) {
+      Retrive_Article_By_userId(user.id)
       .then(result => {
         setData(result);
       })
-      .catch(err => {
-        console.log(err);
-      })
     }
+    
   }, [data, userId]);
 
   function DeleteArticle(id){
-    fetch(`${serverUrl}delete_article/${id}`, {
-      method: 'GET'
+    axios.get(serverUrl+'delete_article/'+id, {
+      headers
     })
-    .then(res => res.json())
     .then(result => {
-      console.log(result);
-      setMessage(result.success);
+      setMessage(result.data.success);
       setOpen(true);
     })
     .catch(err => {
@@ -105,10 +103,10 @@ export default function Dashboard() {
       <b><i><u><Typography variant="h5">My Profile</Typography></u></i></b> <br/>
       <Grid container spacing={1}>
         <Grid item xs={12} sm={6} align="center" justify="center">
-          <Typography variant="h6" >Name: {localStorage.getItem('name')}</Typography>
+          <Typography variant="h6" >Name: {user.fName+" "+user.lName}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} align="center" justify="center">
-          <Typography variant="h6" >Email: {localStorage.getItem('email')}</Typography>
+          <Typography variant="h6" >Email: {user.email}</Typography>
         </Grid>
       </Grid>
       <br/>
