@@ -9,7 +9,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import CategoryIcon from '@mui/icons-material/Category';
-import { decoded } from '../../utils/user';
+import { user } from '../../utils/user';
 import { Retrieve_All_Categories } from '../../services/category';
 import { Retrieve_All_Subjects } from '../../services/subject';
 import { Retrieve_Feedback_By_Subject } from '../../services/feedback';
@@ -33,7 +33,7 @@ export default function Explore() {
 
   useEffect(() => {
 
-    const userId=decoded.id;
+    const userId=user.id;
     
     Retrieve_All_Categories()
     .then(result => {
