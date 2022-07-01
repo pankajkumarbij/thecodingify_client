@@ -1,48 +1,9 @@
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { makeStyles } from '@mui/styles';
-import Routes from './routes/routes';
+import Routing from './router/routing';
 
-const theme = createTheme({
-  components: {
-    MuiButton: {
-      variants: [
-        {
-          props: { variant: 'navitem' },
-          style: {
-            color: 'white',
-            textTransform: 'none',
-          },
-        },
-      ],
-    },
-    MuiTypography: {
-      styleOverrides: {
-        root: {
-          fontFamily: `'Playfair Display', serif`,
-        }
-      }
-    }
-  },
-});
-
-function App() {
-
-  const classes = useStyles();
+export default function App() {
   return (
-    <div className={classes.container}>
-      <ThemeProvider theme={theme}>
-        <Routes />
-      </ThemeProvider>
-    </div>
+    <>
+      <Routing />
+    </>
   );
 }
-
-export default App;
-
-const useStyles = makeStyles({
-  container: {
-    // backgroundColor:'black', 
-    // color: 'white', 
-    // opacity: '90%'
-  },
-});

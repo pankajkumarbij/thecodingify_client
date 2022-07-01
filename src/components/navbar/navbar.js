@@ -1,316 +1,125 @@
-import { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { makeStyles } from '@mui/styles';
-import { AppBar,Toolbar,Typography,Button, Stack, Menu, MenuItem, IconButton, Drawer, Divider, Modal, Box, Tabs, Tab } from '@mui/material';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import LoginIcon from '@mui/icons-material/Login';
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import MenuIcon from "@mui/icons-material/Menu";
-import BookmarksIcon from '@mui/icons-material/Bookmarks';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Notifications from '@mui/icons-material/Notifications';
-import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
-import PropTypes from 'prop-types';
-import Login from '../user/login';
-import Register from '../user/register';
+import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBookReader, faCaretDown, faCode, faDashboard, faGlobe, faHome, faLaptopCode, faListCheck, faSignInAlt, faSignOut, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { containedButton, outlinedButton } from '../../styles/style';
+import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { trueOpenLogin, trueOpenRegister } from '../../redux/actions/index';
+import Model from '../user/model';
+import { useNavigate } from 'react-router-dom';
 import { user } from '../../utils/user';
-import { Retrieve_Bookmark_By_UserId } from '../../services/bookmark';
-import axios from 'axios';
-import { headers } from '../../utils/header';
 
-const serverUrl = process.env.REACT_APP_SERVER_URL;
-const drawerWidth = 200;
+export default function Navbar(){
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const [toggle, setToggle] = useState(true);
 
-  return (
-    <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other} >
-      {value === index && (
-        <Box>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-  
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-  
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
-
-export default function Navbar() {
-
-  const [bookmarks, setBookmarks] = useState();
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [mobileView, setMobileView] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [anchorEl2, setAnchorEl2] = useState(null);
-  const open = Boolean(anchorEl2);
-  const [open1, setOpen1] = useState(false);
-  const [value, setValue] = useState(0);
-
-  let history = useHistory();
-
-  useEffect(() => {
-
-    if(user.id){
-      Retrieve_Bookmark_By_UserId(user.id)
-      .then(result => {
-        setBookmarks(result);
-      })
-    }
-
-    const setResponsiveness = () => {
-      return window.innerWidth < 900 ? setMobileView(true) : setMobileView(false)
-    };
-    setResponsiveness();
-    window.addEventListener("resize", () => setResponsiveness());
-
-  }, [bookmarks]);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const handleOpen1 = () => setOpen1(true);
-  const handleClose1 = () => setOpen1(false);
-
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleClick = (event) => {
-    setAnchorEl2(event.currentTarget);
-  };
-
-  const handleClose2 = () => {
-    setAnchorEl2(null);
-  };
+  const isOpenModel = useSelector((state) => state.changeOpenModel);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function Logout(){
     localStorage.removeItem('token');
-    history.push("/");
+    navigate("/");
     window.location.reload(false);
   }
 
-  function deletebookmark(subject){
-    axios.get(serverUrl+'delete_bookmark/'+user.id+"/"+subject, {
-      headers
-    })
-    .then(result => {
-      console.log(result);
-    })
-    .catch(err => {
-      console.log(err);
-    })
-  }
-
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '80%',
-    bgcolor: 'background.paper',
-    borderRadius: '10px',
-    boxShadow: 24,
-    pt: 4,
-    pl: 4,
-    pr: 4,
-    '@media (min-width:900px)': {
-      width: '40%',
-    }
-  };
-
-  const classes = useStyles();
-  const displayDesktop = () => {
-    return (
-      <>
-        <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 'bold' }} className={classes.brand}> Codingify </Typography>
-          <Stack spacing={3} direction="row">
-            <Button component={Link} to="/" variant="navitem">Home</Button>
-            <Button variant="navitem" onClick={handleMenu} endIcon={<KeyboardArrowDownIcon/>}>Courses</Button>
-            <Button component={Link} to="/" variant="navitem">Blogs</Button>
-            <Menu id="menu-appbar" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose} >
-              <MenuItem component={Link} to="/explore/all" onClick={handleClose}>Explore All</MenuItem>
-              <MenuItem component={Link} to="/explore/dsa" onClick={handleClose}>DSA</MenuItem>
-              <MenuItem component={Link} to="/explore/web" onClick={handleClose}>Web Dev</MenuItem>
-              <MenuItem component={Link} to="/explore/mobile" onClick={handleClose}>Mobile Dev</MenuItem>
-            </Menu>
-            {user.email ?
+  return (      
+    <nav className="bg-navblue px-2 sm:px-6 py-3 dark:bg-gray-900 border-b">
+      <div className="container flex flex-wrap justify-between items-center mx-auto">
+        <div>
+          <Link to="/"><p className="self-center text-orange-500 text-xl font-semibold whitespace-nowrap"><FontAwesomeIcon icon={faLaptopCode} /> Codingify</p></Link>
+        </div>
+        <div className="flex items-center md:order-2">
+          {isOpenModel===0 ?
+            <>
+            {user==='no user' ?
               <>
-                <IconButton>
-                  <BookmarksIcon size="small" style={{color: 'white'}} onClick={handleClick}/>
-                </IconButton>
-                <Menu
-                  id="basic-menu"
-                  anchorEl={anchorEl2}
-                  open={open}
-                  onClose={handleClose2}
-                  MenuListProps={{
-                  'aria-labelledby': 'basic-button',
-                  }}
-                >
-                  {bookmarks && bookmarks.map((item, index)=> {
-                    return (
-                      <>
-                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                          <MenuItem component={Link} to={"/showarticals/"+item.subject} onClick={handleClose2}>{index+1+". "+item.subject}</MenuItem>
-                          <IconButton onClick={()=>deletebookmark(item.subject)}>
-                            <DeleteIcon />
-                          </IconButton>
-                        </div>
-                        <Divider/>
-                      </>
-                    )
-                  })}
-                </Menu>
-                <IconButton>
-                  <Notifications size="small" style={{color: 'white'}} onClick={handleClick}/>
-                </IconButton>
-                {user.email==="codingify.tech@gmail.com" &&
-                  <Button component={Link} to="/admindashboard" variant="outlined" color="error" startIcon={<AdminPanelSettingsOutlinedIcon />}>Admin Panel</Button>
-                }
-                <Button component={Link} to="/dashboard" variant="outlined" color="warning" startIcon={<AccountCircleRoundedIcon />}>Dashboard</Button>
-                <Button variant="contained" color="warning" startIcon={<LogoutRoundedIcon />} onClick={()=>Logout()} >Logout</Button>
+                <button className={outlinedButton} onClick={()=>dispatch(trueOpenLogin())} ><FontAwesomeIcon icon={faSignInAlt} />&nbsp; Login</button> &nbsp;&nbsp;
+                <button className={containedButton+" hidden"} onClick={()=>dispatch(trueOpenRegister())} ><FontAwesomeIcon icon={faUserPlus} />&nbsp; Register</button>
               </>
-              :
-              <>
-                <Button onClick={handleOpen1} variant="outlined" color="warning" startIcon={<LoginIcon />}>Login</Button>
-                <Button onClick={handleOpen1} variant="contained" color="warning" startIcon={<PersonAddIcon />}>Register</Button>
-              </>
+            :
+              <div className="relative group">
+                <button type="button">
+                  <img className="w-8 h-8 rounded-full" src="https://www.diethelmtravel.com/wp-content/uploads/2016/04/bill-gates-wealthiest-person.jpg" alt="user img" />
+                </button>
+                <div className="absolute hidden right-0 bg-white rounded divide-y divide-gray-300 border shadow dark:bg-gray-900 dark:border dark:divide-gray-600 group-hover:block" id="dropdown">
+                  <div className="py-3 px-4">
+                    <span className="block text-sm text-gray-900 dark:text-white">{user.fName+" "+user.lName}</span>
+                    <span className="block text-sm font-medium text-gray-500 truncate dark:text-gray-400">{user.email}</span>
+                  </div>
+                  <ul className="py-1" aria-labelledby="dropdown">
+                    <li>
+                      <Link to="/" className="block py-2 px-4 text-sm text-gray-700 hover:bg-orange-500 hover:text-white dark:hover:bg-orange-500 dark:text-gray-200 dark:hover:text-white"><FontAwesomeIcon icon={faUser} />&nbsp; Profile</Link>
+                    </li>
+                    <li>
+                      <Link to="/dashboard" className="block py-2 px-4 text-sm text-gray-700 hover:bg-orange-500 hover:text-white dark:hover:bg-orange-500 dark:text-gray-200 dark:hover:text-white"><FontAwesomeIcon icon={faDashboard} />&nbsp; Dashboard</Link>
+                    </li>
+                    <li>
+                      <button className="block py-2 px-4 text-sm text-gray-700 hover:bg-orange-500 hover:text-white dark:hover:bg-orange-500 dark:text-gray-200 dark:hover:text-white" onClick={()=>Logout()} ><FontAwesomeIcon icon={faSignOut} />&nbsp; Logout</button>
+                    </li>
+                  </ul>
+                </div>
+              </div> 
             }
-          </Stack>
-        </Toolbar>
-      </>
-    );
-  };
-
-  const displayMobile = () => {
-
-    const handleDrawerOpen = () => setDrawerOpen(true);
-    const handleDrawerClose = () => setDrawerOpen(false);
-
-    return (
-      <Toolbar>
-        <IconButton onClick={handleDrawerOpen} color="inherit">
-          <MenuIcon color="warning" />
-        </IconButton>
-        <Drawer 
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            '& .MuiDrawer-paper': {
-              width: drawerWidth,
-              boxSizing: 'border-box',
-              backgroundColor: '#060238',
-              padding: '5%',
-            },
-          }}
-          open={drawerOpen} 
-          anchor="left" 
-          onClose={handleDrawerClose}
-        >
-          <Stack spacing={3}>
-            <Button component={Link} to="/" variant="navitem" onClick={handleDrawerClose}>Home</Button>
-            <Button variant="navitem" onClick={handleMenu} endIcon={<KeyboardArrowDownIcon/>}>Courses</Button>
-            <Button component={Link} to="/"  onClick={handleDrawerClose} variant="navitem">Blogs</Button>
-            <Menu id="menu-appbar" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose} >
-              <MenuItem component={Link} to="/explore/all" onClick={() => {handleClose(); handleDrawerClose();}}>Explore All</MenuItem>
-              <MenuItem component={Link} to="/explore/dsa" onClick={() => {handleClose(); handleDrawerClose();}}>DSA</MenuItem>
-              <MenuItem component={Link} to="/explore/web" onClick={() => {handleClose(); handleDrawerClose();}}>Web Dev</MenuItem>
-              <MenuItem component={Link} to="/explore/mobile" onClick={() => {handleClose(); handleDrawerClose();}}>Mobile Dev</MenuItem>
-            </Menu>
-            {user.email ?
-              <>
-                <IconButton>
-                  <BookmarksIcon style={{color: 'white'}} onClick={handleClick} />
-                </IconButton>
-                <Menu
-                  id="basic-menu"
-                  anchorEl={anchorEl2}
-                  open={open}
-                  onClose={handleClose2}
-                  MenuListProps={{
-                  'aria-labelledby': 'basic-button',
-                  }}
-                >
-                  {bookmarks && bookmarks.map((item, index)=> {
-                    return (
-                      <>
-                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                          <MenuItem component={Link} to={"/showarticals/"+item.subject} onClick={handleClose2}>{index+1+". "+item.subject}</MenuItem>
-                          <IconButton onClick={()=>deletebookmark(item.subject)}>
-                            <DeleteIcon />
-                          </IconButton>
-                        </div>
-                        <Divider/>
-                      </>
-                    )
-                  })}
-                </Menu>
-                <Button component={Link} to="/dashboard" variant="outlined" color="warning" startIcon={<AccountCircleRoundedIcon />}>Dashboard</Button>
-                <Button variant="contained" color="warning" startIcon={<LogoutRoundedIcon />} onClick={()=>Logout()} >Logout</Button>
-              </>
-              :
-              <>
-                <Button onClick={() => {handleOpen1(); handleDrawerClose();}} variant="outlined" color="warning" startIcon={<LoginIcon />}>Login</Button>
-                <Button onClick={() => {handleOpen1(); handleDrawerClose();}} variant="contained" color="warning" startIcon={<PersonAddIcon />}>Register</Button>
-              </>
-            }
-          </Stack>
-        </Drawer>
-        <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 'bold' }} className={classes.brand}> Codingify </Typography>
-      </Toolbar>
-    );
-  };
-
-  return (
-    <header>
-      <Modal open={open1} onClose={handleClose1} >
-        <Box sx={style}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs value={value} onChange={handleChange} variant="fullWidth" centered>
-              <Tab label="Login" {...a11yProps(0)} />
-              <Tab label="Register" {...a11yProps(1)} />
-            </Tabs>
-          </Box>
-          <TabPanel value={value} index={0}>
-            <Login />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <Register />
-          </TabPanel>
-        </Box>
-      </Modal>
-      <AppBar position="fixed" color="transparent" sx={{backgroundColor: '#060238'}}>
-        {mobileView ? displayMobile() : displayDesktop()}
-      </AppBar>
-    </header>
-  );
+            </>
+            :
+            <Model />
+          }
+          <button data-collapse-toggle="mobile-menu-2" type="button" className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false" onClick={()=>setToggle(!toggle)}>
+            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+            <svg className="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+        <div className={(toggle ? "hidden " : "")+"justify-between items-center w-full md:flex md:w-auto md:order-1"} id="mobile-menu-2">
+          <ul className="flex flex-col mt-4 md:flex-row md:space-x-14 md:mt-0 md:text-sm md:font-medium">
+            <li>
+              <Link to="/"><a href="/" className="block py-2 pr-4 pl-3 text-white border-b hover:bg-orange-500 md:hover:bg-transparent md:border-0 md:hover:text-orange-500 md:p-0"><FontAwesomeIcon className="mr-0.5" icon={faHome} />&nbsp;Home</a></Link>
+            </li>
+            <li className="relative group">
+              <button className="block py-2 pr-4 pl-3 text-white border-b hover:bg-orange-500 md:hover:bg-transparent md:border-0 md:hover:text-orange-500 md:p-0"><FontAwesomeIcon icon={faBookReader} />&nbsp;&nbsp;Courses <FontAwesomeIcon icon={faCaretDown} /></button>
+              <ul className="fixed hidden bg-white rounded divide-y divide-gray-300 border shadow dark:bg-gray-900 dark:border dark:divide-gray-600 group-hover:block" aria-labelledby="dropdown" id="dropdown">
+                <li>
+                  <Link to="/explore" className="block py-2 px-4 text-sm text-gray-700 hover:bg-orange-500 hover:text-white dark:hover:bg-orange-500 dark:text-gray-200 dark:hover:text-white">Explore All</Link>
+                </li>
+                <li>
+                  <Link to="/" className="block py-2 px-4 text-sm text-gray-700 hover:bg-orange-500 hover:text-white dark:hover:bg-orange-500 dark:text-gray-200 dark:hover:text-white">Data Structures & Algorithms</Link>
+                </li>
+                <li>
+                  <Link to="/" className="block py-2 px-4 text-sm text-gray-700 hover:bg-orange-500 hover:text-white dark:hover:bg-orange-500 dark:text-gray-200 dark:hover:text-white">Web Development</Link>
+                </li>
+                <li>
+                  <Link to="/" className="block py-2 px-4 text-sm text-gray-700 hover:bg-orange-500 hover:text-white dark:hover:bg-orange-500 dark:text-gray-200 dark:hover:text-white">Mobile App Development</Link>
+                </li>
+              </ul>
+            </li>
+            <li className="relative group">
+              <button className="block py-2 pr-4 pl-3 text-white border-b hover:bg-orange-500 md:hover:bg-transparent md:border-0 md:hover:text-orange-500 md:p-0"><FontAwesomeIcon icon={faCode} />&nbsp;&nbsp;Practice <FontAwesomeIcon icon={faCaretDown} /></button>
+              <ul className="fixed hidden bg-white rounded divide-y divide-gray-300 border shadow dark:bg-gray-900 dark:border dark:divide-gray-600 group-hover:block" aria-labelledby="dropdown" id="dropdown">
+                <li>
+                  <a href="/" className="block py-2 px-4 text-sm text-gray-700 hover:bg-orange-500 hover:text-white dark:hover:bg-orange-500 dark:text-gray-200 dark:hover:text-white">Data Structures</a>
+                </li>
+                <li>
+                  <a href="/" className="block py-2 px-4 text-sm text-gray-700 hover:bg-orange-500 hover:text-white dark:hover:bg-orange-500 dark:text-gray-200 dark:hover:text-white">Algorithms</a>
+                </li>
+              </ul>
+            </li>
+            <li className="relative group">
+              <button className="block py-2 pr-4 pl-3 text-white border-b hover:bg-orange-500 md:hover:bg-transparent md:border-0 md:hover:text-orange-500 md:p-0"><FontAwesomeIcon icon={faListCheck} />&nbsp;&nbsp;Trainings <FontAwesomeIcon icon={faCaretDown} /></button>
+              <ul className="fixed hidden bg-white rounded divide-y divide-gray-300 border shadow dark:bg-gray-900 dark:border dark:divide-gray-600 group-hover:block" aria-labelledby="dropdown" id="dropdown">
+                <li>
+                  <a href="/" className="block py-2 px-4 text-sm text-gray-700 hover:bg-orange-500 hover:text-white dark:hover:bg-orange-500 dark:text-gray-200 dark:hover:text-white">Corporate Training</a>
+                </li>
+                <li>
+                  <a href="/" className="block py-2 px-4 text-sm text-gray-700 hover:bg-orange-500 hover:text-white dark:hover:bg-orange-500 dark:text-gray-200 dark:hover:text-white">College Trainings</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="/" className="block py-2 pr-4 pl-3 text-white border-b hover:bg-orange-500 md:hover:bg-transparent md:border-0 md:hover:text-orange-500 md:p-0"><FontAwesomeIcon className="mr-0.5" icon={faGlobe} />&nbsp;Blogs</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  )
 }
-
-const useStyles = makeStyles({
-  brand: {
-    color: '#f4511e',
-    fontWeight: 'bold',
-    fontStyle: 'italic',
-  }
-});

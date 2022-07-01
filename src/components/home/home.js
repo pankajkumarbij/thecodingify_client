@@ -1,140 +1,116 @@
-import { makeStyles } from '@mui/styles';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFacebook, faInstagram, faLinkedinIn, faTwitter, faYoutube } from '@fortawesome/free-brands-svg-icons';
+import { faArrowRight, faSearch, faVideo } from '@fortawesome/free-solid-svg-icons';
+import { containedButton, outlinedButton, textButton } from '../../styles/style';
 import { Link } from 'react-router-dom';
-import { Grid, Typography, Button, Stack, IconButton, Paper } from '@mui/material';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import YouTubeIcon from '@mui/icons-material/YouTube';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 
 export default function Home() {
-
-  const classes = useStyles();
-  
   return (
     <>
-      <Grid container spacing={2} className={classes.container}>
-        <Grid item xs={12} sm={6} align="center" justify="center">
-          <div className={classes.headline}>
-            <Typography variant="h2" align="left" className={classes.heading} sx={{ color: '#ED6C02' }}>Learn Coding for</Typography>
-            <Typography variant="h2" align="left" className={classes.heading}>Your Future</Typography>
-            <Typography variant="h2" align="left" className={classes.heading} sx={{ color: '#00c853' }}>from Codingify</Typography>
-            <br/>
-            <Typography variant="h6" align="left" className={classes.subheading}>Learn all the computer science related subjects and technologies for your Placement and Higher studies for free.</Typography>
-            <br/>
-            <Stack direction="row" spacing={2}>
-              <Paper variant="outlined"><IconButton color="primary"><FacebookIcon /></IconButton></Paper>
-              <Paper variant="outlined"><IconButton color="error"><YouTubeIcon /></IconButton></Paper>
-              <Paper variant="outlined"><IconButton color="info"><LinkedInIcon /></IconButton></Paper>
-              <Paper variant="outlined"><IconButton color="error"><InstagramIcon /></IconButton></Paper>
-              <Paper variant="outlined"><IconButton color="primary"><TwitterIcon /></IconButton></Paper>
-            </Stack>
-            <br/><br/>
-            <Stack direction="row" spacing={2}>
-              <Button variant="outlined" color="warning" href="https://www.youtube.com/channel/UCeP_br3EsyThN5J2xvpg9WA">Video Lectures</Button>
-              <Button component={Link} to="/explore/all" variant="contained" color="warning">Explore Now</Button>
-            </Stack>
+      <div className="flex flex-wrap dark:bg-gray-900">
+        <div className="w-full md:w-1/2 p-6 md:px-24 md:py-20">
+          <div className="flex justify-center pt-4">
+            <div>
+              <p className="font-medium text-orange-500 text-3xl lg:text-5xl md:text-4xl flex justify-center md:justify-start">Learn from Anywhere</p>
+              <p className="font-medium text-gray-900 dark:text-white mt-2 text-3xl lg:text-5xl md:text-4xl flex justify-center md:justify-start">With Best Instructors</p>
+              <p className="font-medium text-green-500 mt-2 text-3xl lg:text-5xl md:text-4xl flex justify-center md:justify-start">on The Codingify</p>
+              <p className="font-medium text-gray-600 dark:text-gray-300 mt-2 text-base md:text-xl md:w-11/12 flex justify-center md:justify-start">Self Learn Computer Science related courses</p>
+              <p className="font-medium text-gray-600 dark:text-gray-300 mt-2 text-base md:text-xl md:w-11/12 flex justify-center md:justify-start">and regularly practice them practically</p>
+              <p className="font-medium text-gray-600 dark:text-gray-300 mt-2 text-base md:text-xl md:w-11/12 flex justify-center md:justify-start">to creck the Placement in yout dream company.</p>
+              <div className="flex justify-center sm:justify-start space-x-7 sm:space-x-7 mt-6">
+                <button className="p-1 md:p-1.5 border rounded border-gray-400 hover:border-orange-500 hover:border-dashed"><FontAwesomeIcon className="text-blue-600 text-2xl" icon={faFacebook} /></button>
+                <button className="p-1 md:p-1.5 border rounded border-gray-400 hover:border-orange-500 hover:border-dashed"><FontAwesomeIcon className="text-red-500 text-2xl" icon={faYoutube} /></button>
+                <button className="p-1 md:p-1.5 border rounded border-gray-400 hover:border-orange-500 hover:border-dashed"><FontAwesomeIcon className="text-blue-400 text-2xl" icon={faLinkedinIn} /></button>
+                <button className="p-1 md:p-1.5 border rounded border-gray-400 hover:border-orange-500 hover:border-dashed"><FontAwesomeIcon className="text-orange-600 text-2xl" icon={faInstagram} /></button>
+                <button className="p-1 md:p-1.5 border rounded border-gray-400 hover:border-orange-500 hover:border-dashed"><FontAwesomeIcon className="text-blue-500 text-2xl" icon={faTwitter} /></button>
+              </div>
+              <Link to="/explore">
+                <div className="flex justify-center sm:justify-start mt-6">
+                  <button className="shadow border rounded-l-lg py-2 px-3 text-orange-500 bg-white">
+                    <FontAwesomeIcon icon={faSearch} />
+                  </button>
+                  <input className="shadow appearance-none border w-full md:w-8/12 py-2 px-3 text-grey-darker" id="password" type="text" placeholder="search..." />
+                  <button className="shadow border rounded-r-lg py-2 px-3 text-orange-500 hover:bg-orange-500 hover:text-white bg-white">
+                    <FontAwesomeIcon icon={faArrowRight} />
+                  </button>
+                </div>
+              </Link>
+            </div>
           </div>
-        </Grid>
-        <Grid item xs={12} sm={6} align="center" justify="center">
-          <img src='images/home.png' alt="home" className={classes.img}/>
-        </Grid>
-      </Grid>
-      <br/>
-      <br/>
-      <u><Typography variant="h4" align="center" justify="center">We Provide Many Computer Science Courses</Typography></u>
-      <br/>
-      <br/>
-      <Grid container spacing={5} className={classes.courses}>
-        <Grid item xs={12} sm={3} align="center" justify="center">
-          <div className={classes.coursecard}>
-            <Paper elevation={24} style={{ backgroundColor: '#7b1fa2', padding: '5%', height: '16rem' }}>
-              <img src="images/dsa.png" alt="dsa" width="100"/>
-              <br/>
-              <Typography variant="h6" className={classes.coursestypo}>Data Structures & Algorithms</Typography>
-              <br/>
-              <Button component={Link} to="/explore/DSA" variant="outlined" color="warning" endIcon={<ArrowRightAltIcon />} sx={{ color: 'white', border: '1px solid white'}}>Explore Courses</Button>
-            </Paper>
+        </div>
+        <div class="w-full md:w-1/2 mb-4">
+          <div className="flex justify-center md:pt-7">
+            <img className="w-11/12 md:mt-7 md:w-8/12" src="../images/home1.png" alt="img" />
           </div>
-        </Grid>
-        <Grid item xs={12} sm={3} align="center" justify="center">
-          <div className={classes.coursecard}>
-            <Paper elevation={24} style={{ backgroundColor: '#f57c00', padding: '5%', height: '16rem' }}>
-              <img src="images/web.png" alt="web" width="135"/>
-              <br/>
-              <Typography variant="h6" className={classes.coursestypo}>Web Development (Frontend & Backend)</Typography>
-              <br/>
-              <Button component={Link} to="/explore/web dev" variant="outlined" color="warning" endIcon={<ArrowRightAltIcon />} sx={{ color: 'white', border: '1px solid white'}}>Explore Courses</Button>
-            </Paper>
+        </div>
+      </div>
+      <div className="dark:bg-gray-900">
+        <div className="flex justify-between px-4 md:px-24">
+          <p className="text-gray-900 text-xl md:text-2xl dark:text-white mb-3">Populer Category</p>
+          <button className={textButton+" text-blue-600 mb-2"}>View All</button>
+        </div>
+        <div className="flex flex-wrap px-2 md:px-16">
+          <div className="w-full md:w-1/4 p-2 md:px-8 py-2">
+            <div className="shadow shadow-white rounded bg-purple-800 px-8 pt-1 pb-2">
+              <center>
+                <img className="my-4" src="../images/dsa.png" alt="img" width="50%" />
+                <p className="text-xl text-white">Data Structure & Algorithms</p>
+                <button className={outlinedButton+" my-4 text-white border-gray-900"}>Explore Courses &nbsp;<FontAwesomeIcon icon={faArrowRight} /></button>
+              </center>
+            </div>
           </div>
-        </Grid>
-        <Grid item xs={12} sm={3} align="center" justify="center">
-          <div className={classes.coursecard}>
-            <Paper elevation={24} style={{ backgroundColor: '#c2185b', padding: '5%', height: '16rem' }}>
-              <img src="images/mobile.png" alt="mobile" width="115"/>
-              <br/>
-              <Typography variant="h6" className={classes.coursestypo}>Mobile App Development (Android & IOS)</Typography>
-              <br/>
-              <Button component={Link} to="/explore/mobile app" variant="outlined" color="warning" endIcon={<ArrowRightAltIcon />} sx={{ color: 'white', border: '1px solid white'}}>Explore Courses</Button>
-            </Paper>
+          <div className="w-full md:w-1/4 p-2 md:px-8 py-2">
+            <div className="shadow shadow-white rounded bg-amber-600 px-8 pt-1 pb-2">
+              <center>
+                <img className="my-4" src="../images/web.png" alt="img" width="70%" />
+                <p className="text-xl text-white">Web Development (Frontend & Backend)</p>
+                <button className={outlinedButton+" my-4 text-white border-gray-900"}>Explore Courses &nbsp;<FontAwesomeIcon icon={faArrowRight} /></button>
+              </center>
+            </div>
           </div>
-        </Grid>
-        <Grid item xs={12} sm={3} align="center" justify="center">
-          <div className={classes.coursecard}>
-            <Paper elevation={24} style={{ backgroundColor: '#00796b', padding: '5%', height: '16rem'}}>
-              <img src="images/ml.png" alt="ml" width="100"/>
-              <br/>
-              <Typography variant="h6" className={classes.coursestypo}>Data Science & Machine Learning</Typography> 
-              <br/>
-              <Button component={Link} to="/explore/ml" variant="outlined" color="warning" endIcon={<ArrowRightAltIcon />} sx={{ color: 'white', border: '1px solid white'}}>Explore Courses</Button>
-            </Paper>
+          <div className="w-full md:w-1/4 p-2 md:px-8 py-2">
+            <div className="shadow shadow-white rounded bg-pink-700 px-8 pt-1 pb-2">
+              <center>
+                <img className="my-4" src="../images/mobile.png" alt="img" width="61%" />
+                <p className="text-xl text-white">Mobile Development (Android & IOS)</p>
+                <button className={outlinedButton+" my-4 text-white border-gray-900"}>Explore Courses &nbsp;<FontAwesomeIcon icon={faArrowRight} /></button>
+              </center>
+            </div>
           </div>
-        </Grid>
-      </Grid>
-      <br/>
-      <br/>
+          <div className="w-full md:w-1/4 p-2 md:px-8 py-2">
+            <div className="shadow shadow-white rounded bg-emerald-600 px-8 pt-1 pb-2">
+              <center>
+                <img className="my-4" src="../images/ml.png" alt="img" width="50%" />
+                <p className="text-xl text-white">Data Science & Machine Learning</p>
+                <button className={outlinedButton+" my-4 text-white border-gray-900"}>Explore Courses &nbsp;<FontAwesomeIcon icon={faArrowRight} /></button>
+              </center>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-wrap dark:bg-gray-900 flex-col-reverse md:flex-row">
+          <div class="w-full md:w-1/2 mb-4">
+            <div className="flex justify-center md:pt-7">
+              <img className="w-11/12 md:mt-7 md:w-7/12" src="../images/home.png" alt="img" />
+            </div>
+          </div>
+          <div className="w-full md:w-1/2 p-6 md:px-24 md:py-20">
+            <div className="flex justify-center pt-4">
+              <div>
+                <p className="font-medium text-orange-500 text-3xl lg:text-5xl md:text-4xl flex justify-center md:justify-start">Learn Everything</p>
+                <p className="font-medium text-gray-900 dark:text-white mt-2 text-3xl lg:text-5xl md:text-4xl flex justify-center md:justify-start">Related to Coding</p>
+                <p className="font-medium text-green-500 mt-2 text-3xl lg:text-5xl md:text-4xl flex justify-center md:justify-start">on One Platform</p>
+                <p className="font-medium text-gray-600 dark:text-gray-300 mt-2 text-base md:text-xl flex justify-center md:justify-start">Learn all the computer science related subjects</p>
+                <p className="font-medium text-gray-600 dark:text-gray-300 mt-2 text-base md:text-xl flex justify-center md:justify-start">and technologies like Data Structure & Algo, </p>
+                <p className="font-medium text-gray-600 dark:text-gray-300 mt-2 text-base md:text-xl flex justify-center md:justify-start">Web Development and Mobile Development</p>
+                <div className="flex justify-center sm:justify-start mt-6 space-x-1 md:space-x-2">
+                  <button className={outlinedButton}><FontAwesomeIcon icon={faVideo} /> Video Lectures</button>
+                  <button className={containedButton}>Explore Courses <FontAwesomeIcon icon={faArrowRight} /></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
-
-const useStyles = makeStyles({
-  container: {
-    paddingTop: '4%'
-  },
-  img: {
-    marginTop: '70px',
-    width: '90%',
-    '@media (min-width:600px)': {
-      width: '80%',
-    },
-  },
-  headline: {
-    marginTop: '70px',
-    paddingTop: '2%',
-    width: '90%',
-    '@media (min-width:600px)': {
-      paddingTop: '5%',
-      width: '70%',
-    },
-  },
-  heading: {
-    fontWeight: 900,
-  },
-  subheading: {
-    color: '#616161',
-  },
-  coursecard: {
-    width: '90%',
-  },
-  coursestypo: {
-    color: 'white',
-    fontSize: '15rem',
-  },
-  courses: {
-    '@media (min-width:600px)': {
-      paddingLeft: '100px',
-      paddingRight: '100px',
-    }
-  }
-});
