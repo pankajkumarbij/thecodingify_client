@@ -109,7 +109,7 @@ export default function Register() {
       <button className={outlinedButton+" mb-2"} type="button" onClick={()=>Register()} >
         Register
       </button>
-      <p className="flex justify-center inline-block align-baseline font-bold text-sm text-blue hover:text-blue-darker dark:text-white" href="/">
+      <p className="flex justify-center align-baseline font-bold text-sm text-blue hover:text-blue-darker dark:text-white" href="/">
         Already have an account? &nbsp; <button className="text-blue-400" onClick={()=>dispatch(trueOpenLogin())}>Login here</button>
       </p>
       {error &&

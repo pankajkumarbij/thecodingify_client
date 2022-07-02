@@ -10,6 +10,7 @@ import AddSubject from "../components/category_subject/add_subject";
 import Main from "../components/dashboard/main";
 import EditArticle from "../components/dashboard/editArticle";
 import Showarticals from "../components/article/showArticle";
+import Admin from "../components/admin/admin";
 
 export default function Routing() {
   return (
@@ -17,6 +18,7 @@ export default function Routing() {
       <Navbar/>
       <Routes>
         <Route path="/" exact element={<Home/>} />
+        <Route path="/admin" exact element={<Admin/>} />
         <Route path="/login" exact element={<Login/>} />
         <Route path="/register" exact element={<Register/>} />
         <Route path="/explore" exact element={<Explore/>} />

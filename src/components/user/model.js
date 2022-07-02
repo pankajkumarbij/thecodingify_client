@@ -31,7 +31,7 @@ export default function Model() {
   return (
     <>
       <div id="defaultModal" aria-hidden="true" className={isHidden+"flex justify-center overflow-y-auto overflow-x-hidden fixed right-0 left-0 top-0 z-50 items-center h-modal h-full backdrop-brightness-50"}>
-        <div className="relative shadow-2xl px-4 w-full rounded max-w-xl h-full h-auto bg-white dark:bg-gray-800">
+        <div className="relative shadow-2xl px-4 w-full rounded max-w-xl h-auto bg-white dark:bg-gray-800">
           <div className="flex justify-between items-start p-2 rounded-t">
             <button type="button" className="text-gray-800 bg-transparent hover:bg-gray-600 hover:text-white rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:text-white dark:hover:bg-white dark:hover:text-black" onClick={()=> dispatch(falseOpen())} >
               <FontAwesomeIcon icon={faClose} />
